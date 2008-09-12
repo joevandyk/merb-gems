@@ -1,0 +1,273 @@
+have_library: checking for socket() in -lsocket... -------------------- no
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.      -lruby-static -lsocket  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘socket’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))socket; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.      -lruby-static -lsocket  -ldl -lobjc  "
+ld: library not found for -lsocket
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { socket(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for gethostbyname() in -lnsl... -------------------- no
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.      -lruby-static -lnsl  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘gethostbyname’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))gethostbyname; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.      -lruby-static -lnsl  -ldl -lobjc  "
+ld: library not found for -lnsl
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { gethostbyname(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for atan() in -lm... -------------------- no
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.      -lruby-static -lm  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘atan’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))atan; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.      -lruby-static -lm  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: warning: incompatible implicit declaration of built-in function ‘atan’
+conftest.c:3: error: too few arguments to function ‘atan’
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { atan(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for atan() in -lm... -------------------- yes
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common -fno-builtin conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.      -lruby-static -lm  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘atan’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))atan; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common -fno-builtin conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.      -lruby-static -lm  -ldl -lobjc  "
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { atan(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for inflate() in -lz... -------------------- yes
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -lm  -lruby-static -lz -lm  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘inflate’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))inflate; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -lm  -lruby-static -lz -lm  -ldl -lobjc  "
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { inflate(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for iconv_open() in -liconv... -------------------- yes
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -lz -lm  -lruby-static -liconv -lz -lm  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘iconv_open’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))iconv_open; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -lz -lm  -lruby-static -liconv -lz -lm  -ldl -lobjc  "
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { iconv_open(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for xmlParseDoc() in -lxml2... -------------------- yes
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -liconv -lz -lm  -lruby-static -lxml2 -liconv -lz -lm  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘xmlParseDoc’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))xmlParseDoc; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -liconv -lz -lm  -lruby-static -lxml2 -liconv -lz -lm  -ldl -lobjc  "
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { xmlParseDoc(); return 0; }
+/* end */
+
+--------------------
+
+have_header: checking for libxml/xmlversion.h... -------------------- no
+
+"gcc -E -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common  conftest.c -o conftest.i"
+conftest.c:1:31: error: libxml/xmlversion.h: No such file or directory
+checked program was:
+/* begin */
+1: #include <libxml/xmlversion.h>
+/* end */
+
+--------------------
+
+find_header: checking for #include <libxml/xmlversion.h>
+... -------------------- yes
+
+"gcc -E -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common  conftest.c -o conftest.i"
+conftest.c:1:31: error: libxml/xmlversion.h: No such file or directory
+checked program was:
+/* begin */
+1: #include <libxml/xmlversion.h>
+/* end */
+
+"gcc -E -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common -I/standard-rails/install/include conftest.c -o conftest.i"
+conftest.c:1:31: error: libxml/xmlversion.h: No such file or directory
+checked program was:
+/* begin */
+1: #include <libxml/xmlversion.h>
+/* end */
+
+"gcc -E -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common -I/opt/include/libxml2 conftest.c -o conftest.i"
+conftest.c:1:31: error: libxml/xmlversion.h: No such file or directory
+checked program was:
+/* begin */
+1: #include <libxml/xmlversion.h>
+/* end */
+
+"gcc -E -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common -I/usr/local/include/libxml2 conftest.c -o conftest.i"
+conftest.c:1:31: error: libxml/xmlversion.h: No such file or directory
+checked program was:
+/* begin */
+1: #include <libxml/xmlversion.h>
+/* end */
+
+"gcc -E -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I.  -g -O2 -pipe -fno-common -I/usr/include/libxml2 conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include <libxml/xmlversion.h>
+/* end */
+
+--------------------
+
+have_func: checking for xmlDocFormatDump()... -------------------- yes
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I. -I/usr/include/libxml2  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -lxml2 -liconv -lz -lm  -lruby-static -lxml2 -liconv -lz -lm  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘xmlDocFormatDump’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))xmlDocFormatDump; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I. -I/usr/include/libxml2  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -lxml2 -liconv -lz -lm  -lruby-static -lxml2 -liconv -lz -lm  -ldl -lobjc  "
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { xmlDocFormatDump(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for docbCreateFileParserCtxt()... -------------------- yes
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I. -I/usr/include/libxml2  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -lxml2 -liconv -lz -lm  -lruby-static -lxml2 -liconv -lz -lm  -ldl -lobjc  "
+conftest.c: In function ‘t’:
+conftest.c:3: error: ‘docbCreateFileParserCtxt’ undeclared (first use in this function)
+conftest.c:3: error: (Each undeclared identifier is reported only once
+conftest.c:3: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { void ((*volatile p)()); p = (void ((*)()))docbCreateFileParserCtxt; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/standard-rails/install/lib/ruby/1.8/i686-darwin9.4.0 -I. -I/usr/include/libxml2  -g -O2 -pipe -fno-common conftest.c  -L"." -L"/standard-rails/install/lib" -L"/standard-rails/install/lib" -L.     -lxml2 -liconv -lz -lm  -lruby-static -lxml2 -liconv -lz -lm  -ldl -lobjc  "
+checked program was:
+/* begin */
+1: /*top*/
+2: int main() { return 0; }
+3: int t() { docbCreateFileParserCtxt(); return 0; }
+/* end */
+
+--------------------
+
