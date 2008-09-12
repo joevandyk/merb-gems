@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Alias for #close"
+full_name: IO#orig_close
+is_singleton: false
+name: orig_close
+params: (*arg,&blk)
+visibility: public

@@ -1,0 +1,11 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: 
+- !ruby/object:RI::AliasName 
+  name: orig_open
+block_params: 
+comment: 
+full_name: IO#open
+is_singleton: false
+name: open
+params: (*arg, &blk)
+visibility: public
