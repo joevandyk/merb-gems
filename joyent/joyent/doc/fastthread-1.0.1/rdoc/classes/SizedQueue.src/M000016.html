@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>num_waiting (SizedQueue)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: num_waiting
+ * call-seq: num_waiting
+ *
+ * Returns the number of threads waiting on the queue.
+ *
+ */
+
+static VALUE
+rb_queue_num_waiting(VALUE self)
+{
+    Queue *queue;
+    VALUE result;
+    Data_Get_Struct(self, Queue, queue);
+
+    lock_mutex(&amp;queue-&gt;mutex);
+    result = ULONG2NUM(queue-&gt;value_available.waiting.size +
+      queue-&gt;space_available.waiting.size);
+    unlock_mutex(&amp;queue-&gt;mutex);
+
+    return result;
+}</pre>
+</body>
+</html>

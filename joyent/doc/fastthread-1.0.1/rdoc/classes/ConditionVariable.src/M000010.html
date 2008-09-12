@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>broadcast (ConditionVariable)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: broadcast
+ * call-seq: broadcast
+ *
+ * Wakes up all threads waiting for this condition.
+ *
+ */
+
+static VALUE
+rb_condvar_broadcast(VALUE self)
+{
+    ConditionVariable *condvar;
+
+    Data_Get_Struct(self, ConditionVariable, condvar);
+  
+    rb_thread_critical = 1;
+    rb_ensure(wake_all, (VALUE)&amp;condvar-&gt;waiting, set_critical, 0);
+    rb_thread_schedule();
+
+    return self;
+}</pre>
+</body>
+</html>

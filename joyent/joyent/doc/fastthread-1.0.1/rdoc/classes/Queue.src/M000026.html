@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>push (Queue)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: push
+ * call-seq: push(obj)
+ *
+ * Pushes +obj+ to the queue.
+ *
+ */
+
+static VALUE
+rb_queue_push(VALUE self, VALUE value)
+{
+    Queue *queue;
+    Data_Get_Struct(self, Queue, queue);
+
+    lock_mutex(&amp;queue-&gt;mutex);
+    while (queue-&gt;capacity &amp;&amp; queue-&gt;values.size &gt;= queue-&gt;capacity) {
+        wait_condvar(&amp;queue-&gt;space_available, &amp;queue-&gt;mutex);
+    }
+    push_list(&amp;queue-&gt;values, value);
+    signal_condvar(&amp;queue-&gt;value_available);
+    unlock_mutex(&amp;queue-&gt;mutex);
+
+    return self;
+}</pre>
+</body>
+</html>

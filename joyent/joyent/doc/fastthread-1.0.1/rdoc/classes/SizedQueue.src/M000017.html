@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>pop (SizedQueue)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: pop
+ * call_seq: pop(non_block=false)
+ *
+ * Retrieves data from the queue.  If the queue is empty, the calling thread is
+ * suspended until data is pushed onto the queue.  If +non_block+ is true, the
+ * thread isn't suspended, and an exception is raised.
+ *
+ */
+
+static VALUE
+rb_queue_pop(int argc, VALUE *argv, VALUE self)
+{
+    Queue *queue;
+    int should_block;
+    VALUE result;
+    Data_Get_Struct(self, Queue, queue);
+
+    if (argc == 0) {
+        should_block = 1;
+    } else if (argc == 1) {
+        should_block = !RTEST(argv[0]);
+    } else {
+        rb_raise(rb_eArgError, &quot;wrong number of arguments (%d for 1)&quot;, argc);
+    }
+
+    lock_mutex(&amp;queue-&gt;mutex);
+    if (!queue-&gt;values.entries &amp;&amp; !should_block) {
+        unlock_mutex(&amp;queue-&gt;mutex);
+        rb_raise(private_eThreadError, &quot;queue empty&quot;);
+    }
+
+    while (!queue-&gt;values.entries) {
+        wait_condvar(&amp;queue-&gt;value_available, &amp;queue-&gt;mutex);
+    }
+
+    result = shift_list(&amp;queue-&gt;values);
+    if (queue-&gt;capacity &amp;&amp; queue-&gt;values.size &lt; queue-&gt;capacity) {
+        signal_condvar(&amp;queue-&gt;space_available);
+    }
+    unlock_mutex(&amp;queue-&gt;mutex);
+
+    return result;
+}</pre>
+</body>
+</html>

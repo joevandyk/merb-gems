@@ -1,0 +1,1 @@
+/opt/local/bin/ruby18 extconf.rb install -i /home/joe/projects/merb_gems/joyent merb --no-rdoc --no-ri

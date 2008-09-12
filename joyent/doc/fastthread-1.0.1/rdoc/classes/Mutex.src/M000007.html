@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>synchronize (Mutex)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: synchronize
+ * call-seq: synchronize { ... }
+ *
+ * Obtains a lock, runs the block, and releases the lock when the block
+ * completes.  See the example under Mutex.
+ *
+ */
+
+static VALUE
+rb_mutex_synchronize(VALUE self)
+{
+    rb_mutex_lock(self);
+    return rb_ensure(rb_yield, Qundef, rb_mutex_unlock, self);
+}</pre>
+</body>
+</html>

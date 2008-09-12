@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>clear (Queue)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: clear
+ * call-seq: clear
+ *
+ * Removes all objects from the queue.
+ *
+ */
+
+static VALUE
+rb_queue_clear(VALUE self)
+{
+    Queue *queue;
+    Data_Get_Struct(self, Queue, queue);
+
+    lock_mutex(&amp;queue-&gt;mutex);
+    clear_list(&amp;queue-&gt;values);
+    signal_condvar(&amp;queue-&gt;space_available);
+    unlock_mutex(&amp;queue-&gt;mutex);
+
+    return self;
+}</pre>
+</body>
+</html>

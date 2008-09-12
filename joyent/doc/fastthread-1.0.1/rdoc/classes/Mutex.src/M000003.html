@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>try_lock (Mutex)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: try_lock
+ * call-seq: try_lock
+ *
+ * Attempts to obtain the lock and returns immediately. Returns +true+ if the
+ * lock was granted.
+ *
+ */
+
+static VALUE
+rb_mutex_try_lock(VALUE self)
+{
+    Mutex *mutex;
+
+    Data_Get_Struct(self, Mutex, mutex);
+
+    if (RTEST(mutex-&gt;owner))
+        return Qfalse;
+
+    mutex-&gt;owner = rb_thread_current();
+    return Qtrue;
+}</pre>
+</body>
+</html>

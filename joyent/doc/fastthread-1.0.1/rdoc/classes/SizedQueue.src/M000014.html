@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>empty? (SizedQueue)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: empty?
+ * call-seq: empty?
+ *
+ * Returns +true+ if the queue is empty.
+ *
+ */
+
+static VALUE
+rb_queue_empty_p(VALUE self)
+{
+    Queue *queue;
+    VALUE result;
+    Data_Get_Struct(self, Queue, queue);
+
+    lock_mutex(&amp;queue-&gt;mutex);
+    result = queue-&gt;values.size == 0 ? Qtrue : Qfalse;
+    unlock_mutex(&amp;queue-&gt;mutex);
+
+    return result;
+}</pre>
+</body>
+</html>

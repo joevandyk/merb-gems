@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (SizedQueue)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre>/*
+ * Document-method: max=
+ * call-seq: max=(size)
+ *
+ * Sets the maximum size of the queue.
+ *
+ */
+
+static VALUE
+rb_sized_queue_max_set(VALUE self, VALUE value)
+{
+    Queue *queue;
+    unsigned long new_capacity;
+    unsigned long difference;
+    Data_Get_Struct(self, Queue, queue);
+
+    new_capacity = NUM2ULONG(value);
+
+    if (new_capacity &lt; 1) {
+        rb_raise(rb_eArgError, &quot;value must be positive&quot;);
+    }
+
+    lock_mutex(&amp;queue-&gt;mutex);
+    if (queue-&gt;capacity &amp;&amp; new_capacity &gt; queue-&gt;capacity) {
+        difference = new_capacity - queue-&gt;capacity;
+    } else {
+        difference = 0;
+    }
+    queue-&gt;capacity = new_capacity;
+    for (; difference &gt; 0; --difference) {
+        signal_condvar(&amp;queue-&gt;space_available);
+    }
+    unlock_mutex(&amp;queue-&gt;mutex);
+
+    return self;
+}</pre>
+</body>
+</html>

@@ -1,0 +1,10 @@
+have_header: checking for stdio.h... -------------------- yes
+
+"gcc -E -I. -I/opt/local/lib/ruby/1.8/i386-solaris2 -I. -D_REENTRANT -I/usr/include -I/opt/local/include/db4 -I/opt/local/include -O -D_REENTRANT -I/usr/include -I/opt/local/include/db4 -I/opt/local/include  -fPIC  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include <stdio.h>
+/* end */
+
+--------------------
+
