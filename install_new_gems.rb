@@ -5,4 +5,4 @@ if ARGV[0].nil?
   exit
 end
 
-`cat installed.txt | xargs -p -L 1 gem install -i #{ARGV[0]} --no-rdoc --no-ri`
+`cat installed.txt | xargs -t -L 1 gem install -i #{ARGV[0]} --no-rdoc --no-ri`

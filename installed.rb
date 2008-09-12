@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
 gems = `gem list`.scan(/([\w\-_]+)\s*\(([.\d]+)\)/)
-gems.each { |n,v| puts "#{n} -v #{v}" }
-
+File.open("installed.txt", "w") do |f|
+  gems.each { |n,v| f << "#{n} -v #{v}\n" }
+end
