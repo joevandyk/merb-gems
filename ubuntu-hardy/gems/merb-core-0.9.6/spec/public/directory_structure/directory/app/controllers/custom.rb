@@ -9,11 +9,11 @@ class Custom < Application
   def template
     render
   end
-
+  
   private
-
-  def _template_location(context, type = nil, controller = controller_name)
+  
+  def _template_location(context, type = nil, controller = controller_name)  
     "wonderful/#{context}"
   end
-
+  
 end

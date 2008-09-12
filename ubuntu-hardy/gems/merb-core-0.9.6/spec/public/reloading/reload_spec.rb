@@ -5,7 +5,7 @@ class MockTimedExecutor
     @@scheduled_action = block
   end
   def self.run_task
-    @@scheduled_action.call
+    @@scheduled_action.call 
   end
 end
 
@@ -18,17 +18,17 @@ Merb.start :environment => 'test',
 describe "TimedExecutor" do
   it "should call a block of code repeatedly in the background" do
     list_of_things = []
-
+    
     RealTimedExecutor.every(0.1) do
       list_of_things << "Something"
     end
-
+    
     sleep 0.5
-
+    
     list_of_things.should_not be_empty
     list_of_things.size.should > 1
   end
-
+  
 end
 
 describe "The reloader" do
@@ -68,16 +68,16 @@ describe "The reloader" do
         class Reloader2
         end
       END
-
+     
     MockTimedExecutor.run_task
-
+    
     defined?(Hello).should be_nil
     defined?(Reloader).should_not be_nil
     defined?(Reloader2).should_not be_nil
   end
 
   it "should remove classes for _abstract_subclasses" do
-
+    
     update_file <<-END
 
         class Reloader < Application
@@ -86,7 +86,7 @@ describe "The reloader" do
         class Reloader2 < Application
         end
       END
-
+    
     MockTimedExecutor.run_task
 
     Merb::AbstractController._abstract_subclasses.should include("Reloader")

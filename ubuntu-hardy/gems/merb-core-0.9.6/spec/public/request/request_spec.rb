@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), "..", "..", "spec_helper")
 require "mongrel"
 
 describe Merb::Request, "#method" do
-
+  
   [:get, :head, :put, :delete].each do |method|
     it "should use the HTTP if it was a #{method.to_s.upcase}" do
       fake_request(:request_method => method.to_s).method.should == method
@@ -12,13 +12,13 @@ describe Merb::Request, "#method" do
       request = fake_request({:request_method => "POST"}, :post_body => "_method=#{method}")
       request.method.should == method
     end
-
+    
     it "should use the _method query params for #{method.to_s.upcase} when it came in as a POST" do
       Merb::Request.parse_multipart_params = false
       request = fake_request(:request_method => "POST", :query_string => "_method=#{method}")
-      request.method.should == method
+      request.method.should == method      
     end
-
+    
     [:get, :head, :put, :delete].each do |meth|
       it "should return #{method == meth} when calling #{meth}? and the method is :#{method}" do
         request = fake_request({:request_method => method.to_s})
@@ -32,29 +32,29 @@ describe Merb::Request, "#method" do
     lambda { request.params }.should_not raise_error(JSON::ParserError)
     request.params.should == {}
   end
-
+  
   it "should return an empty hash when XML is not parsable" do
     request = fake_request({:content_type => "application/xml"}, :req => '')
     lambda { request.params }.should_not raise_error
     request.params.should == {}
   end
-
+  
   it "should default to POST if the _method is not defined" do
     request = fake_request({:request_method => "POST"}, :post_body => "_method=zed")
     request.method.should == :post
   end
-
+  
   it "should raise an error if an unknown method is used" do
     request = fake_request({:request_method => "foo"})
     running {request.method}.should raise_error
   end
-
+    
 end
 
 describe Merb::Request, " query and body params" do
-
+  
   before(:all) { Merb::BootLoader::Dependencies.enable_json_gem }
-
+  
   {"foo=bar&baz=bat"        => {"foo" => "bar", "baz" => "bat"},
    "foo=bar&foo=baz"        => {"foo" => "baz"},
    "foo[]=bar&foo[]=baz"    => {"foo" => ["bar", "baz"]},
@@ -71,25 +71,25 @@ describe Merb::Request, " query and body params" do
        request = fake_request({}, :post_body => query)
        request.params.should == parse
      end
-
+   
    end
-
+   
   it "should support JSON params" do
     request = fake_request({:content_type => "application/json"}, :req => %{{"foo": "bar"}})
     request.params.should == {"foo" => "bar"}
   end
-
+  
   it "should populated the inflated_object parameter if JSON params do not inflate to a hash" do
     request = fake_request({:content_type => "application/json"}, :req => %{["foo", "bar"]})
     request.params.should have_key(:inflated_object)
     request.params[:inflated_object].should eql(["foo", "bar"])
   end
-
+  
   it "should support XML params" do
     request = fake_request({:content_type => "application/xml"}, :req => %{<foo bar="baz"><baz/></foo>})
     request.params.should == {"foo" => {"baz" => nil, "bar" => "baz"}}
-  end
-
+  end  
+  
 end
 
 describe Merb::Request, "#remote_ip" do
@@ -97,39 +97,39 @@ describe Merb::Request, "#remote_ip" do
     request = fake_request({:http_x_forwarded_for => "www.example.com"})
     request.remote_ip.should == "www.example.com"
   end
-
+  
   it "should be able to get the remote IP when some of the X_FORWARDED_FOR are local" do
     request = fake_request({:http_x_forwarded_for => "192.168.2.1,127.0.0.1,www.example.com"})
     request.remote_ip.should == "www.example.com"
   end
-
+  
   it "should be able to get the remote IP when it's in REMOTE_ADDR" do
     request = fake_request({:remote_addr => "www.example.com"})
-    request.remote_ip.should == "www.example.com"
+    request.remote_ip.should == "www.example.com"    
   end
 end
 
 describe Merb::Request, "#cookies" do
-
+  
   it "should take cookies in the HTTP_COOKIE environment variable" do
     request = fake_request({:http_cookie => "merb=canhascookie; version=1"})
     request.cookies.should == {"merb" => "canhascookie", "version" => "1"}
   end
-
+  
   it "should handle badly formatted cookies" do
     request = fake_request({:http_cookie => "merb=; ; also=hats"})
     request.cookies.should == {"merb" => "", "also" => "hats", "" => nil}
   end
-
+  
 end
 
 describe Merb::Request, " misc" do
-
+  
   it "should know if a request is an XHR" do
     request = fake_request({:http_x_requested_with => "XMLHttpRequest"})
     request.should be_xhr
   end
-
+  
   it "should know if the protocol is http or https (when HTTPS is on)" do
     request = fake_request({:https => "on"})
     request.protocol.should == "https://"
@@ -146,37 +146,37 @@ describe Merb::Request, " misc" do
     request = fake_request({})
     request.protocol.should == "http://"
   end
-
+  
   it "should get the content-length" do
     request = fake_request({:content_length => "300"})
     request.content_length.should == 300
   end
-
+  
   it "should be able to get the path from the URI (stripping trailing /)" do
     request = fake_request({:request_uri => "foo/bar/baz/?bat"})
     request.path.should == "foo/bar/baz"
   end
-
+  
   it "should be able to get the path from the URI (joining multiple //)" do
     request = fake_request({:request_uri => "foo/bar//baz/?bat"})
     request.path.should == "foo/bar/baz"
   end
-
+  
   it "should get the remote port" do
     request = fake_request({:server_port => "80"})
     request.port.should == 80
   end
-
+  
   it "should get the parts of the remote subdomain" do
     request = fake_request({:http_host => "zoo.boom.foo.com"})
     request.subdomains.should == ["zoo", "boom"]
   end
-
+  
   it "should get the parts of the remote subdomain when there's an irregular TLD number" do
     request = fake_request({:http_host => "foo.bar.co.uk"})
     request.subdomains(2).should == ["foo"]
   end
-
+  
   it "should get the full domain (not including subdomains and not including the port)" do
     request = fake_request({:http_host => "www.foo.com:80"})
     request.domain.should == "foo.com"
@@ -196,7 +196,7 @@ describe Merb::Request, " misc" do
     request = fake_request({:http_host => "www.example.com"})
     request.host.should == "www.example.com"
   end
-
+    
   {:http_referer            => ["referer", "http://referer.com"],
    :request_uri             => ["uri", "http://uri.com/uri"],
    :http_user_agent         => ["user_agent", "mozilla"],
@@ -213,14 +213,14 @@ describe Merb::Request, " misc" do
    :http_connection         => ["connection", "keep-alive"],
    :path_info               => ["path_info", "foo/bar/baz"],
   }.each do |env, vars|
-
+    
     it "should be able to get the #{env.to_s.upcase}" do
       request = fake_request({env => vars[1]})
       request.send(vars[0]).should == vars[1]
     end
-
+    
   end
-
+  
 end
 
 

@@ -46,12 +46,12 @@ module Merb
         index, params = match(request)
         route = routes[index] if index
         if !route
-          raise ControllerExceptions::NotFound,
+          raise ControllerExceptions::NotFound, 
             "No routes match the request: #{request.uri}"
         end
         [route, params]
       end
-
+      
       # Clear all routes.
       def reset!
         self.routes, self.named_routes = [], {}

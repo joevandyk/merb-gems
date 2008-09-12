@@ -20,7 +20,7 @@
 # name that method will be called and if it is a proc it will be called
 # with an argument of self where self is the current controller object.
 # When you use a proc as a filter it needs to take one parameter.
-#
+# 
 # #after is identical, but the filters are run after the action is invoked.
 #
 # ===== Examples
@@ -28,22 +28,22 @@
 #   before :authenticate, :exclude => [:login, :signup]
 #   before :has_role, :with => ["Admin"], :exclude => [:index, :show]
 #   before Proc.new { some_method }, :only => :foo
-#   before :authorize, :unless => :logged_in?
+#   before :authorize, :unless => :logged_in?  
 #
-# You can use either <code>:only => :actionname</code> or
-# <code>:exclude => [:this, :that]</code> but not both at once.
-# <code>:only</code> will only run before the listed actions and
+# You can use either <code>:only => :actionname</code> or 
+# <code>:exclude => [:this, :that]</code> but not both at once. 
+# <code>:only</code> will only run before the listed actions and 
 # <code>:exclude</code> will run for every action that is not listed.
 #
 # Merb's before filter chain is very flexible. To halt the filter chain you
-# use <code>throw :halt</code>. If <code>throw</code> is called with only one
-# argument of <code>:halt</code> the return value of the method
-# <code>filters_halted</code> will be what is rendered to the view. You can
-# override <code>filters_halted</code> in your own controllers to control what
-# it outputs. But the <code>throw</code> construct is much more powerful than
+# use <code>throw :halt</code>. If <code>throw</code> is called with only one 
+# argument of <code>:halt</code> the return value of the method 
+# <code>filters_halted</code> will be what is rendered to the view. You can 
+# override <code>filters_halted</code> in your own controllers to control what 
+# it outputs. But the <code>throw</code> construct is much more powerful than 
 # just that.
 #
-# <code>throw :halt</code> can also take a second argument. Here is what that
+# <code>throw :halt</code> can also take a second argument. Here is what that 
 # second argument can be and the behavior each type can have:
 #
 # * +String+:
@@ -73,10 +73,10 @@
 #
 # :exclude<Symbol, Array[Symbol]::
 #   A list of actions that this filter should *not* apply to
-#
+# 
 # :if<Symbol, Proc>::
 #   Only apply the filter if the method named after the symbol or calling the proc evaluates to true
-#
+# 
 # :unless<Symbol, Proc>::
 #   Only apply the filter if the method named after the symbol or calling the proc evaluates to false
 #
@@ -95,7 +95,7 @@
 class Merb::AbstractController
   include Merb::RenderMixin
   include Merb::InlineTemplates
-
+  
   class_inheritable_accessor :_layout, :_template_root, :template_roots
   class_inheritable_accessor :_before_filters, :_after_filters
   class_inheritable_accessor :_before_dispatch_callbacks, :_after_dispatch_callbacks
@@ -106,7 +106,7 @@ class Merb::AbstractController
   # @semipublic
   attr_accessor :body
   attr_accessor :action_name
-  attr_accessor :_benchmarks, :_thrown_content
+  attr_accessor :_benchmarks, :_thrown_content  
 
   # Stub so content-type support in RenderMixin doesn't throw errors
   attr_accessor :content_type
@@ -131,7 +131,7 @@ class Merb::AbstractController
   # ==== Returns
   # String:: The controller name in path form, e.g. "admin/items".
   def controller_name()      self.class.controller_name                   end
-
+  
   # This is called after the controller is instantiated to figure out where to
   # look for templates under the _template_root. Override this to define a new
   # structure for your app.
@@ -144,7 +144,7 @@ class Merb::AbstractController
   #
   #
   # ==== Returns
-  # String::
+  # String:: 
   #   Indicating where to look for the template for the current controller,
   #   context, and content-type.
   #
@@ -202,11 +202,11 @@ class Merb::AbstractController
   def self._template_roots=(roots)
     self.template_roots = roots
   end
-
+  
   # ==== Returns
   # Set:: The subclasses.
   def self.subclasses_list() _abstract_subclasses end
-
+  
   class << self
     # ==== Parameters
     # klass<Merb::AbstractController>::
@@ -219,9 +219,9 @@ class Merb::AbstractController
         include Object.full_const_get("#{helper_module_name}") rescue nil
       HERE
       super
-    end
+    end    
   end
-
+  
   # ==== Parameters
   # *args:: The args are ignored.
   def initialize(*args)
@@ -229,9 +229,9 @@ class Merb::AbstractController
     @_caught_content = {}
     @_template_stack = []
   end
-
+  
   # This will dispatch the request, calling internal before/after dispatch_callbacks
-  #
+  # 
   # ==== Parameters
   # action<~to_s>::
   #   The action to dispatch to. This will be #send'ed in _call_action.
@@ -242,14 +242,14 @@ class Merb::AbstractController
   def _dispatch(action)
     self._before_dispatch_callbacks.each { |cb| cb.call(self) }
     self.action_name = action
-
+    
     caught = catch(:halt) do
       start = Time.now
       result = _call_filters(_before_filters)
       @_benchmarks[:before_filters_time] = Time.now - start if _before_filters
       result
     end
-
+  
     @body = case caught
     when :filter_chain_completed  then _call_action(action_name)
     when String                   then caught
@@ -262,12 +262,12 @@ class Merb::AbstractController
     start = Time.now
     _call_filters(_after_filters)
     @_benchmarks[:after_filters_time] = Time.now - start if _after_filters
-
+    
     self._after_dispatch_callbacks.each { |cb| cb.call(self) }
-
+    
     @body
   end
-
+  
   # This method exists to provide an overridable hook for ActionArgs
   #
   # ==== Parameters
@@ -275,7 +275,7 @@ class Merb::AbstractController
   def _call_action(action)
     send(action)
   end
-
+  
   # ==== Parameters
   # filter_set<Array[Filter]>::
   #   A set of filters in the form [[:filter, rule], [:filter, rule]]
@@ -394,7 +394,7 @@ class Merb::AbstractController
   def self.before(filter = nil, opts = {}, &block)
     add_filter(self._before_filters, filter || block, opts)
   end
-
+     
   # Skip an after filter that has been previously defined (perhaps in a
   # superclass)
   #
@@ -403,7 +403,7 @@ class Merb::AbstractController
   def self.skip_after(filter)
     skip_filter(self._after_filters, filter)
   end
-
+  
   # Skip a before filter that has been previously defined (perhaps in a
   # superclass).
   #
@@ -411,12 +411,12 @@ class Merb::AbstractController
   # filter<Symbol>:: A filter name to skip.
   def self.skip_before(filter)
     skip_filter(self._before_filters , filter)
-  end
-
+  end  
+  
   #---
   # Defaults that can be overridden by plugins, other mixins, or subclasses
   def _filters_halted()   "<html><body><h1>Filter Chain Halted!</h1></body></html>"  end
-
+  
   # ==== Parameters
   # name<~to_sym, Hash>:: The name of the URL to generate.
   # rparams<Hash>:: Parameters for the route generation.
@@ -436,7 +436,7 @@ class Merb::AbstractController
         :action => action_name,
         :format => params[:format]
       }
-    )
+    ) 
     uri = Merb::Config[:path_prefix] + uri if Merb::Config[:path_prefix]
     uri
   end
@@ -463,7 +463,7 @@ class Merb::AbstractController
     # :// is not part of protocol name
     protocol = rparams.delete(:protocol)
     protocol << "://" if protocol
-
+    
     (protocol || request.protocol) +
       (rparams.delete(:host) || request.host) +
       url(name, rparams)
@@ -503,19 +503,19 @@ class Merb::AbstractController
   #   Symbol, String or Proc, or if an unknown option is passed.
   def self.add_filter(filters, filter, opts={})
     raise(ArgumentError,
-      "You can specify either :only or :exclude but
+      "You can specify either :only or :exclude but 
        not both at the same time for the same filter.") if opts.key?(:only) && opts.key?(:exclude)
-
+       
      raise(ArgumentError,
-       "You can specify either :if or :unless but
+       "You can specify either :if or :unless but 
         not both at the same time for the same filter.") if opts.key?(:if) && opts.key?(:unless)
-
+        
     opts.each_key do |key| raise(ArgumentError,
       "You can only specify known filter options, #{key} is invalid.") unless FILTER_OPTIONS.include?(key)
     end
 
     opts = normalize_filters!(opts)
-
+    
     case filter
     when Proc
       # filters with procs created via class methods have identical signature
@@ -529,11 +529,11 @@ class Merb::AbstractController
         filters << [filter, opts]
       end
     else
-      raise(ArgumentError,
+      raise(ArgumentError, 
         'Filters need to be either a Symbol, String or a Proc'
-      )
+      )        
     end
-  end
+  end  
 
   # Skip a filter that was previously added to the filter chain. Useful in
   # inheritence hierarchies.
@@ -578,5 +578,5 @@ class Merb::AbstractController
   def method_missing(sym, *args, &blk)
     return @_merb_partial_locals[sym] if @_merb_partial_locals && @_merb_partial_locals.key?(sym)
     super
-  end
+  end  
 end

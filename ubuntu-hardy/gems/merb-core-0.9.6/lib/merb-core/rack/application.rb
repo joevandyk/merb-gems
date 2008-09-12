@@ -1,8 +1,8 @@
-module Merb
+module Merb  
   module Rack
     class Application
-
-      def call(env)
+      
+      def call(env) 
         begin
           controller = ::Merb::Dispatcher.handle(Merb::Request.new(env))
         rescue Object => e
@@ -25,7 +25,7 @@ module Merb
           true
         else
           false
-        end
+        end        
       end # deferred?(env)
     end # Application
   end # Rack

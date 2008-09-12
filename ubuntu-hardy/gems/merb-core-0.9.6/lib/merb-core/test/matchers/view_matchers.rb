@@ -3,7 +3,7 @@ module Merb::Test::Rspec::ViewMatchers
     def initialize(expected)
       @expected = expected
     end
-
+    
     def matches?(stringlike)
       @document = case stringlike
       when LibXML::XML::Document, LibXML::XML::Node
@@ -15,7 +15,7 @@ module Merb::Test::Rspec::ViewMatchers
       end
       !@document.find(@expected).empty?
     end
-
+    
     # ==== Returns
     # String:: The failure message.
     def failure_message
@@ -26,9 +26,9 @@ module Merb::Test::Rspec::ViewMatchers
     # String:: The failure message to be displayed in negative matches.
     def negative_failure_message
       "expected following text to not match xpath #{@expected}:\n#{@document}"
-    end
+    end    
   end
-
+  
   class HaveSelector
 
     # ==== Parameters
@@ -145,9 +145,9 @@ module Merb::Test::Rspec::ViewMatchers
       @errors[0]
     end
   end
-
+  
   class HasTag
-
+    
     # ==== Parameters
     # tag<~to_s>:: The tag to look for.
     # attributes<Hash>:: Attributes for the tag (see below).
@@ -172,7 +172,7 @@ module Merb::Test::Rspec::ViewMatchers
       else
         Hpricot.parse(stringlike)
       end
-
+      
       @blk = blk unless blk.nil?
 
       unless @blk.nil?
@@ -219,7 +219,7 @@ module Merb::Test::Rspec::ViewMatchers
     def negative_failure_message
       "expected following output to omit a #{tag_for_error} tag:\n#{@document}"
     end
-
+    
     # ==== Returns
     # String:: The tag used in failure messages.
     def tag_for_error
@@ -269,7 +269,7 @@ module Merb::Test::Rspec::ViewMatchers
 
     def matches?(element)
       @element = element
-
+      
       case @content
       when String
         @element.contains?(@content)
@@ -277,7 +277,7 @@ module Merb::Test::Rspec::ViewMatchers
         @element.matches?(@content)
       end
     end
-
+    
     # ==== Returns
     # String:: The failure message.
     def failure_message
@@ -289,7 +289,7 @@ module Merb::Test::Rspec::ViewMatchers
     def negative_failure_message
       "expected the following element's content to not #{content_message}:\n#{@element.inner_text}"
     end
-
+    
     def content_message
       case @content
       when String
@@ -299,7 +299,7 @@ module Merb::Test::Rspec::ViewMatchers
       end
     end
   end
-
+  
   # ==== Parameters
   # name<~to_s>:: The name of the tag to look for.
   # attrs<Hash>:: Attributes to look for in the tag (see below).
@@ -364,7 +364,7 @@ module Merb::Test::Rspec::ViewMatchers
   end
 
   alias_method :with_tag, :have_tag
-
+  
   def contain(content)
     HasContent.new(content)
   end

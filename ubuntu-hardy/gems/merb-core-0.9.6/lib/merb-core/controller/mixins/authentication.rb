@@ -1,5 +1,5 @@
 module Merb::AuthenticationMixin
-
+  
   # Attempts to authenticate the user via HTTP Basic authentication. Takes a
   # block with the username and password, if the block yields false the
   # authentication is not accepted and :halt is thrown.
@@ -14,35 +14,35 @@ module Merb::AuthenticationMixin
   #
   # ==== Examples
   #     class Application < Merb::Controller
-  #
+  #     
   #       before :authenticate
-  #
+  #     
   #       protected
-  #
+  #     
   #       def authenticate
   #         basic_authentication("My App") do |username, password|
   #           password == "secret"
   #         end
   #       end
-  #
+  #     
   #     end
   #
   #     class Application < Merb::Controller
-  #
+  #     
   #       before :authenticate
-  #
+  #     
   #       def authenticate
   #         user = basic_authentication.authenticate do |username, password|
   #           User.authenticate(username, password)
   #         end
-  #
+  #     
   #         if user
   #           @current_user = user
   #         else
   #           basic_authentication.request
   #         end
   #       end
-  #
+  #     
   #     end
   #
   # If you need to request basic authentication inside an action you need to use the request! method.
@@ -50,7 +50,7 @@ module Merb::AuthenticationMixin
   # ====Example
   #
   #    class Sessions < Application
-  #
+  #  
   #      def new
   #        case content_type
   #        when :html
@@ -59,15 +59,15 @@ module Merb::AuthenticationMixin
   #          basic_authentication.request!
   #        end
   #      end
-  #
-  #    end
+  # 
+  #    end 
   #
   #---
   # @public
   def basic_authentication(realm = "Application", &authenticator)
     @_basic_authentication ||= BasicAuthentication.new(self, realm, &authenticator)
   end
-
+  
   class BasicAuthentication
     # So we can have access to the status codes
     include Merb::ControllerExceptions
@@ -91,33 +91,33 @@ module Merb::AuthenticationMixin
       request!
       throw :halt, @controller.render("HTTP Basic: Access denied.\n", :status => Unauthorized.status, :layout => false)
     end
-
-    # This is a special case for use outside a before filter.  Use this if you need to
+    
+    # This is a special case for use outside a before filter.  Use this if you need to 
     # request basic authenticaiton as part of an action
     def request!
       @controller.status = Unauthorized.status
       @controller.headers['WWW-Authenticate'] = 'Basic realm="%s"' % @realm
     end
-
+    
     # Checks to see if there has been any basic authentication credentials provided
     def provided?
       @auth.provided?
     end
-
+    
     def username
       provided? ? @auth.credentials.first : nil
     end
-
+    
     def password
       provided? ? @auth.credentials.last : nil
     end
-
+    
     protected
-
+    
     def authenticate_or_request(&authenticator)
       authenticate(&authenticator) || request
     end
-
+    
   end
 
 end

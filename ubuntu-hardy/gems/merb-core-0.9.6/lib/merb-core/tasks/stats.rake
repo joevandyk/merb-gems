@@ -1,6 +1,6 @@
 def show_line(name, stats, color = nil)
   ce = color ? "\033[0m" : ""
-  puts  "| #{color}#{name.to_s.capitalize.ljust(20)}#{ce} " +
+  puts  "| #{color}#{name.to_s.capitalize.ljust(20)}#{ce} " + 
         "| #{color}#{stats[:lines].to_s.rjust(7)}#{ce} " +
         "| #{color}#{stats[:loc].to_s.rjust(7)}#{ce} " +
         "| #{color}#{stats[:classes].to_s.rjust(7)}#{ce} " +
@@ -41,31 +41,31 @@ task :stats do
     :spec         => 'spec'
   }
   EMPTY_STATS = { :lines => 0, :loc => 0, :classes => 0, :modules => 0, :methods => 0 }
-
+ 
   @all = {}
   total = EMPTY_STATS.clone
   ce = "\033[0m"
   cb = "\033[35m"
   cg = "\033[4;32m"
   cr = "\033[31m"
-
+ 
   puts separator
   puts "| #{cg}Name#{ce}                 | #{cg}Lines#{ce}   | #{cg}LOC#{ce}     | #{cg}Classes#{ce} | #{cg}Modules#{ce} | #{cg}Methods#{ce} |"
   puts separator
-
-  STATISTICS_DIRS.each_pair do |name, dir|
+ 
+  STATISTICS_DIRS.each_pair do |name, dir| 
     @stats = EMPTY_STATS.clone
     check_dir(dir)
     @all[name] = @stats
     show_line(name, @stats)
     @stats.each_pair { |type, count| total[type] += count }
   end
-
+ 
   show_line('Total', total, cr)
-
+ 
   code_loc = [:controllers, :helpers, :models].inject(0) { |sum, e| sum += @all[e][:loc] }
   test_loc = @all[:spec][:loc]
-
+ 
   puts "   Code LOC: #{cb}#{code_loc}#{ce}     Test LOC: #{cb}#{test_loc}#{ce}     Test to code radio:  #{cb}1:%0.2f#{ce}" % (test_loc.to_f / code_loc.to_f)
   puts
 end

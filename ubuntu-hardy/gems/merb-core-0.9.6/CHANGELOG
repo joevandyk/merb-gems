@@ -859,7 +859,7 @@
 * Fixed image_tag, css_include_tag, and js_include_tag to work with path_prefix
 * fix set_status to actually work, add docs,
 * config/merb.yml is now correctly loaded from Rake and test environment - using Merb::Server.load_config
-* added config option to disable loading of the JSON gem - still enabled by default
+* added config option to disable loading of the JSON gem - still enabled by default 
 * don't raise if names local on a partial is nil
 * Use svn export instead of checkout upon merb:freeze_from_svn
 * Extracted url and other general methods out of ControllerMixin into GeneralControllerMixin

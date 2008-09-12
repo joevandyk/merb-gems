@@ -8,65 +8,65 @@ module Merb
   # the client requested and is capable of handling, and perform
   # content negotiation to pick the proper content format to
   # deliver.
-  #
+  # 
   # If you hear someone say "Use provides" they're talking about the
   # Responder.  If you hear someone ask "What happened to respond_to?"
   # it was replaced by provides and the other Responder methods.
-  #
+  # 
   # == A simple example
-  #
+  # 
   # The best way to understand how all of these pieces fit together is
   # with an example.  Here's a simple web-service ready resource that
-  # provides a list of all the widgets we know about.  The widget list is
+  # provides a list of all the widgets we know about.  The widget list is 
   # available in 3 formats: :html (the default), plus :xml and :text.
-  #
+  # 
   #     class Widgets < Application
   #       provides :html   # This is the default, but you can
   #                        # be explicit if you like.
   #       provides :xml, :text
-  #
+  #       
   #       def index
   #         @widgets = Widget.fetch
   #         render @widgets
   #       end
   #     end
-  #
+  # 
   # Let's look at some example requests for this list of widgets.  We'll
   # assume they're all GET requests, but that's only to make the examples
   # easier; this works for the full set of RESTful methods.
-  #
+  # 
   # 1. The simplest case, /widgets.html
   #    Since the request includes a specific format (.html) we know
   #    what format to return.  Since :html is in our list of provided
   #    formats, that's what we'll return.  +render+ will look
   #    for an index.html.erb (or another template format
   #    like index.html.mab; see the documentation on Template engines)
-  #
+  # 
   # 2. Almost as simple, /widgets.xml
   #    This is very similar.  They want :xml, we have :xml, so
-  #    that's what they get.  If +render+ doesn't find an
+  #    that's what they get.  If +render+ doesn't find an 
   #    index.xml.builder or similar template, it will call +to_xml+
-  #    on @widgets.  This may or may not do something useful, but you can
+  #    on @widgets.  This may or may not do something useful, but you can 
   #    see how it works.
   #
   # 3. A browser request for /widgets
   #    This time the URL doesn't say what format is being requested, so
   #    we'll look to the HTTP Accept: header.  If it's '*/*' (anything),
   #    we'll use the first format on our list, :html by default.
-  #
-  #    If it parses to a list of accepted formats, we'll look through
+  #    
+  #    If it parses to a list of accepted formats, we'll look through 
   #    them, in order, until we find one we have available.  If we find
-  #    one, we'll use that.  Otherwise, we can't fulfill the request:
+  #    one, we'll use that.  Otherwise, we can't fulfill the request: 
   #    they asked for a format we don't have.  So we raise
   #    406: Not Acceptable.
-  #
+  # 
   # == A more complex example
-  #
-  # Sometimes you don't have the same code to handle each available
+  # 
+  # Sometimes you don't have the same code to handle each available 
   # format. Sometimes you need to load different data to serve
   # /widgets.xml versus /widgets.txt.  In that case, you can use
   # +content_type+ to determine what format will be delivered.
-  #
+  # 
   #     class Widgets < Application
   #       def action1
   #         if content_type == :text
@@ -75,7 +75,7 @@ module Merb
   #           render
   #         end
   #       end
-  #
+  #       
   #       def action2
   #         case content_type
   #         when :html
@@ -89,7 +89,7 @@ module Merb
   #         end
   #       end
   #     end
-  #
+  # 
   # You can do any standard Ruby flow control using +content_type+.  If
   # you don't call it yourself, it will be called (triggering content
   # negotiation) by +render+.
@@ -97,12 +97,12 @@ module Merb
   # Once +content_type+ has been called, the output format is frozen,
   # and none of the provides methods can be used.
   module ResponderMixin
-
+    
     TYPES = Dictionary.new
     MIMES = {}
 
     class ContentTypeAlreadySet < StandardError; end
-
+    
     # ==== Parameters
     # base<Module>:: The module that ResponderMixin was mixed into
     def self.included(base)
@@ -115,7 +115,7 @@ module Merb
     end
 
     module ClassMethods
-
+      
       # Adds symbols representing formats to the controller's default list of
       # provided_formats. These will apply to every action in the controller,
       # unless modified in the action. If the last argument is a Hash or an
@@ -136,15 +136,15 @@ module Merb
       def provides(*formats)
         self.class_provided_formats |= formats
       end
-
+      
       # This class should only provide the formats listed here, despite any
       # other definitions previously or in superclasses.
       #
       # ==== Parameters
       # *formats<Symbol>:: Registered mime-types.
-      #
+      # 
       # ==== Returns
-      # Array[Symbol]:: List of formats passed in.
+      # Array[Symbol]:: List of formats passed in.      
       #
       #---
       # @public
@@ -155,10 +155,10 @@ module Merb
 
       # This class should not provide any of this list of formats, despite any.
       # other definitions previously or in superclasses.
-      #
+      # 
       # ==== Parameters
       # *formats<Symbol>:: Registered mime-types.
-      #
+      # 
       # ==== Returns
       # Array[Symbol]::
       #   List of formats that remain after removing the ones not to provide.
@@ -176,7 +176,7 @@ module Merb
       def clear_provides
         self.class_provided_formats.clear
       end
-
+      
       # Reset the list of provides to include only :html.
       #
       # ==== Returns
@@ -190,11 +190,11 @@ module Merb
     # Array[Symbol]::
     #   The current list of formats provided for this instance of the
     #   controller. It starts with what has been set in the controller (or
-    #   :html by default) but can be modifed on a per-action basis.
+    #   :html by default) but can be modifed on a per-action basis.      
     def _provided_formats
       @_provided_formats ||= class_provided_formats.dup
     end
-
+    
     # Adds formats to the list of provided formats for this particular request.
     # Usually used to add formats to a single action. See also the
     # controller-level provides that affects all actions in a controller.
@@ -221,8 +221,8 @@ module Merb
 
     # Sets list of provided formats for this particular request. Usually used
     # to limit formats to a single action. See also the controller-level
-    # only_provides that affects all actions in a controller.
-    #
+    # only_provides that affects all actions in a controller.      
+    # 
     # ==== Parameters
     # *formats<Symbol>::
     #   A list of formats to use as the per-action list of provided formats.
@@ -236,15 +236,15 @@ module Merb
       @_provided_formats = []
       provides(*formats)
     end
-
-    # Removes formats from the list of provided formats for this particular
+    
+    # Removes formats from the list of provided formats for this particular 
     # request. Usually used to remove formats from a single action.  See
     # also the controller-level does_not_provide that affects all actions in a
     # controller.
     #
     # ==== Parameters
     # *formats<Symbol>:: Registered mime-type
-    #
+    # 
     # ==== Returns
     # Array[Symbol]::
     #   List of formats that remain after removing the ones not to provide.
@@ -254,7 +254,7 @@ module Merb
     def does_not_provide(*formats)
       @_provided_formats -= formats.flatten
     end
-
+    
     # Do the content negotiation:
     # 1. if params[:format] is there, and provided, use it
     # 2. Parse the Accept header
@@ -270,14 +270,14 @@ module Merb
       else
         accepts = Responder.parse(request.accept).map {|t| t.to_sym}.compact
       end
-
+      
       # no need to make a bunch of method calls to _provided_formats
       provided_formats = _provided_formats
-
+      
       specifics = accepts & provided_formats
       return specifics.first unless specifics.length == 0
       return provided_formats.first if accepts.include?(:all) && !provided_formats.empty?
-
+      
       message  = "A format (%s) that isn't provided (%s) has been requested. "
       message += "Make sure the action provides the format, and be "
       message += "careful of before filters which won't recognize "
@@ -286,7 +286,7 @@ module Merb
         (message % [accepts.join(', '), provided_formats.join(', ')])
     end
 
-    # Returns the output format for this request, based on the
+    # Returns the output format for this request, based on the 
     # provided formats, <tt>params[:format]</tt> and the client's HTTP
     # Accept header.
     #
@@ -295,12 +295,12 @@ module Merb
     # not set or change the list of provided formats.
     #
     # Called automatically by +render+, so you should only call it if
-    # you need the value, not to trigger content negotiation.
-    #
+    # you need the value, not to trigger content negotiation. 
+    # 
     # ==== Parameters
-    # fmt<String>::
+    # fmt<String>:: 
     #   An optional format to use instead of performing content negotiation.
-    #   This can be used to pass in the values of opts[:format] from the
+    #   This can be used to pass in the values of opts[:format] from the 
     #   render function to short-circuit content-negotiation when it's not
     #   necessary. This optional parameter should not be considered part
     #   of the public API.
@@ -314,8 +314,8 @@ module Merb
       self.content_type = (fmt || _perform_content_negotiation) unless @_content_type
       @_content_type
     end
-
-    # Sets the content type of the current response to a value based on
+    
+    # Sets the content type of the current response to a value based on 
     # a passed in key. The Content-Type header will be set to the first
     # registered header for the mime-type.
     #
@@ -332,29 +332,29 @@ module Merb
     # @semipublic
     def content_type=(type)
       unless Merb.available_mime_types.has_key?(type)
-        raise Merb::ControllerExceptions::NotAcceptable.new("Unknown content_type for response: #{type}")
+        raise Merb::ControllerExceptions::NotAcceptable.new("Unknown content_type for response: #{type}") 
       end
 
       mime = Merb.available_mime_types[type]
-
+      
       headers["Content-Type"] = mime[:content_type]
-
+      
       # merge any format specific response headers
       mime[:response_headers].each { |k,v| headers[k] ||= v }
-
+      
       # if given, use a block to finetune any runtime headers
       mime[:response_block].call(self) if mime[:response_block]
 
       @_content_type = type
     end
-
+    
   end
 
   class Responder
-
+  
     # def self.parse(accept_header)
     #   headers = accept_header.split(/,/)
-    #
+    # 
     #   ret = {}
     #   headers.each do |header|
     #     header =~ /\s*([^;\s]*)\s*(;\s*q=\s*([\d\.]+))?/
@@ -365,17 +365,17 @@ module Merb
     #   end
     #   ret.sort_by {|k,v| [v.last]}
     # end
-    #
+    #   
     # def self.mime_name(range)
     #   @mime_names ||= {}
     #   @mime_names[range] ||= Merb::ResponderMixin::MIMES[@media_range]
     # end
-    #
+    #   
     # def self.mime(range)
     #   @mime ||= {}
     #   @mime[range] ||= Merb.available_mime_types[mime_name(range)]
     # end
-
+  
     protected
 
     # Parses the raw accept header into an array of sorted AcceptType objects.
@@ -394,7 +394,7 @@ module Merb
       end
       list.sort
     end
-
+      
   end
 
   class AcceptType
@@ -408,16 +408,16 @@ module Merb
     #   priority.
     def initialize(entry,index)
       @index = index
-
+      
       entry =~ /\s*([^;\s]*)\s*(;\s*q=\s*(.*))?/
       @media_range, quality = $1, $3
-
+      
       @type, @sub_type = @media_range.split(%r{/})
       (quality ||= 0.0) if @media_range == "*/*"
       @quality = quality ? (quality.to_f * 100).to_i : 100
       @quality *= (mime && mime[:default_quality] || 1)
     end
-
+    
     # Compares two accept types for sorting purposes.
     #
     # ==== Parameters
@@ -465,7 +465,7 @@ module Merb
         @syns = []
       end
     end
-
+    
     def mime
       @mime ||= Merb.available_mime_types[Merb::ResponderMixin::MIMES[@media_range]]
     end
@@ -481,7 +481,7 @@ module Merb
     # ==== Returns
     # Symbol: The type as a symbol, e.g. :html.
     def to_sym
-      Merb.available_mime_types.select{|k,v|
+      Merb.available_mime_types.select{|k,v| 
         v[:accepts] == synonyms || v[:accepts][0] == synonyms[0]}.flatten.first
     end
 
@@ -490,7 +490,7 @@ module Merb
     def to_s
       @media_range
     end
-
+  
   end
 
 end

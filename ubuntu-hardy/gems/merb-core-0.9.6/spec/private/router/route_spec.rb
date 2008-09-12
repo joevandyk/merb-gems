@@ -63,7 +63,7 @@ describe Merb::Router::Route, "#fixatable" do
 
     @route = Merb::Router.routes[4]
   end
-
+  
   after :each do
     Merb::Router.reset!
   end
@@ -101,7 +101,7 @@ describe Merb::Router::Route, "#to_s" do
 
     @route = Merb::Router.routes[4]
   end
-
+  
   after :each do
     Merb::Router.reset!
   end
@@ -129,7 +129,7 @@ describe Merb::Router::Route, "#register" do
 
     @route = Merb::Router.routes[4]
   end
-
+  
   after :each do
     Merb::Router.reset!
   end
@@ -227,7 +227,7 @@ describe Merb::Router::Route, "#name" do
   it "only accepts Symbols" do
     lambda { @route.name("home") }.should raise_error(ArgumentError)
   end
-
+  
 end
 
 
@@ -282,7 +282,7 @@ describe Merb::Router::Route, "#generate" do
     @regexp_route   = Merb::Router.named_routes[:regexpy]
     @non_regexp_route = Merb::Router.named_routes[:non_regexpy]
   end
-
+  
   after :each do
     Merb::Router.reset!
   end
@@ -307,7 +307,7 @@ describe Merb::Router::Route, "#generate" do
   it "calls #to_param on segments that respond to it" do
     @non_regexp_route.generate({ :name => stub('US', :to_param => 'USA') }).should == "/world/countries/USA"
   end
-
+  
   it "adds fragment after ?" do
     @non_regexp_route.generate({:name => 101, :area => 10101, :fragment => :a_fragment}).should == "/world/countries/101?area=10101#a_fragment"
   end
@@ -327,7 +327,7 @@ describe Merb::Router::Route, "#if_conditions" do
     @non_regexp_route = Merb::Router.named_routes[:non_regexpy]
     @two_symbol_route = Merb::Router.named_routes[:two_symbol_segments]
   end
-
+  
   after :each do
     Merb::Router.reset!
   end
@@ -367,7 +367,7 @@ describe Merb::Router::Route, "#if_conditions" do
     @non_regexp_route = Merb::Router.named_routes[:non_regexpy]
     @two_symbol_route = Merb::Router.named_routes[:two_symbol_segments]
   end
-
+  
   after :each do
     Merb::Router.reset!
   end
@@ -386,11 +386,11 @@ describe Merb::Router::Route, "#if_conditions" do
 end
 
 describe "Merb::Router::Route.capture" do
-
+  
   after :each do
     Merb::Router.reset!
-  end
-
+  end  
+  
   it "should capture routes that have been added in the block context" do
     routes, named, route = [], {}, nil
     Merb::Router.prepare do |r|
@@ -402,7 +402,7 @@ describe "Merb::Router::Route.capture" do
     routes.should include(route)
     named.should_not include(route)
   end
-
+  
   it "should capture named routes that have been added in the block context" do
     routes, named, route = [], {}, nil
     Merb::Router.prepare do |r|
@@ -414,5 +414,5 @@ describe "Merb::Router::Route.capture" do
     routes.should include(route)
     named[:home].should == route
   end
-
+  
 end

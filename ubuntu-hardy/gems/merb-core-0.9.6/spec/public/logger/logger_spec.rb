@@ -3,17 +3,17 @@ require File.join(File.dirname(__FILE__), "spec_helper")
 describe Merb do
 
   describe "Command Line Options" do
-
+    
     it "should allow -l / --log_level to set the log_level" do
       pending("How do we spec these?")
     end
-
+    
     it "should allow -L / --log_file  to set the log_file" do
       pending("How do we spec these?")
-      # Run an instance of merb from the command line
+      # Run an instance of merb from the command line 
       # using system and test if the file was created?
     end
-
+    
   end
 
 end
@@ -27,7 +27,7 @@ describe Merb::Logger do
       logger.send(:initialize, 'a partridge', 'a pear tree', 'a time bomb')
     end
   end
-
+  
   describe "#set_log" do
 
     before(:each) do
@@ -43,13 +43,13 @@ describe Merb::Logger do
       @logger.set_log(Merb.log_path / "development.log")
       @logger.level.should eql(0)
     end
-
+    
     it "should set the log level to :error (6) when Merb.environment is production" do
       Merb.should_receive(:environment).and_return("production")
       @logger.set_log(Merb.log_path / "production.log")
       @logger.level.should eql(4)
     end
-
+    
     it "should initialize the buffer to an empty array" do
       @logger.buffer.should eql([])
     end
@@ -57,20 +57,20 @@ describe Merb::Logger do
     it "should default the delimiter to ' ~ '" do
       @logger.delimiter.should eql(" ~ ")
     end
-
+    
     it "should assign the newly created object to Merb.logger" do
       @logger = Merb::Logger.new(Merb.log_file)
       Merb.logger.should eql(@logger)
     end
-
+    
   end
-
+  
   describe "#flush" do
 
     before(:each) do
       @logger = Merb::Logger.new(Merb.log_file)
     end
-
+    
     it "should immediately return if the buffer is empty" do
       @logger.should_not_receive(:write)
       @logger.flush
@@ -84,7 +84,7 @@ describe Merb::Logger do
     end
 
   end
-
+  
   describe "#close" do
     before(:each) do
       @logger = Merb::Logger.new(Merb.log_file)
@@ -116,7 +116,7 @@ describe Merb::Logger do
   end
 
   describe "<<" do
-
+    
   end
 
   describe "level methods" do
@@ -154,7 +154,7 @@ describe Merb::Logger do
       @logger.should_receive(:<<).with("message").and_return(true)
       @logger.fatal("message")
     end
-
+    
     # TODO: add positive and negative tests for each of the methods below:
     it "should provide a #debug? method" do
       @logger.should respond_to(:debug?)

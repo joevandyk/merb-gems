@@ -1,7 +1,7 @@
 module Merb
   # Module that is mixed in to all implemented controllers.
   module ControllerMixin
-
+    
     # Enqueu a block to run in a background thread outside of the request
     # response dispatch
     #
@@ -16,11 +16,11 @@ module Merb
     def run_later(&blk)
       Merb::Dispatcher.work_queue << blk
     end
-
+    
     # Renders the block given as a parameter using chunked encoding.
     #
     # ==== Parameters
-    # &blk::
+    # &blk:: 
     #   A block that, when called, will use send_chunks to send chunks of data
     #   down to the server. The chunking will terminate once the block returns.
     #
@@ -34,7 +34,7 @@ module Merb
     #         until done
     #           sleep 0.3
     #           line = io.gets.chomp
-    #
+    #           
     #           if line == 'EOF'
     #             done = true
     #           else
@@ -65,7 +65,7 @@ module Merb
       @response.write('%x' % data.size + "\r\n")
       @response.write(data + "\r\n")
     end
-
+    
     # ==== Parameters
     # &blk::
     #   A proc that should get called outside the mutex, and which will return
@@ -84,7 +84,7 @@ module Merb
         response.write(result)
       }
     end
-
+    
     # Renders the passed in string, then calls the block outside the mutex and
     # after the string has been returned to the client.
     #
@@ -101,8 +101,8 @@ module Merb
         response.send_status(str.length)
         response.send_header
         response.write(str)
-        blk.call
-      }
+        blk.call        
+      }      
     end
 
     # ==== Parameters
@@ -136,11 +136,11 @@ module Merb
       headers['Location'] = url
       "<html><body>You are being <a href=\"#{url}\">redirected</a>.</body></html>"
     end
-
+    
     def message
       @_message = defined?(@_message) ? @_message : request.message
     end
-
+    
     # Sends a file over HTTP.  When given a path to a file, it will set the
     # right headers so that the static file is served directly.
     #
@@ -168,7 +168,7 @@ module Merb
       )
       File.open(file, 'rb')
     end
-
+    
     # Send binary data over HTTP to the user as a file download. May set content type,
     # apparent file name, and specify whether to show data inline or download as an attachment.
     #
@@ -193,7 +193,7 @@ module Merb
       )
       data
     end
-
+    
     # Streams a file over HTTP.
     #
     # ==== Parameters
@@ -244,8 +244,8 @@ module Merb
     def nginx_send_file(file)
       headers['X-Accel-Redirect'] = file
       return ' '
-    end
-
+    end  
+  
     # Sets a cookie to be included in the response.
     #
     # If you need to set a cookie, then use the +cookies+ hash.
@@ -260,7 +260,7 @@ module Merb
       options = expires.is_a?(Hash) ? expires : {:expires => expires}
       cookies.set_cookie(name, value, options)
     end
-
+    
     # Marks a cookie as deleted and gives it an expires stamp in the past. This
     # method is used primarily internally in Merb.
     #
@@ -271,7 +271,7 @@ module Merb
     def delete_cookie(name)
       set_cookie(name, nil, Merb::Const::COOKIE_EXPIRED_TIME)
     end
-
+    
     # Escapes the string representation of +obj+ and escapes it for use in XML.
     #
     # ==== Parameter
@@ -284,7 +284,7 @@ module Merb
     end
     alias h escape_xml
     alias html_escape escape_xml
-
+    
     private
       # Checks whether streaming is supported by the current Rack adapter.
       #

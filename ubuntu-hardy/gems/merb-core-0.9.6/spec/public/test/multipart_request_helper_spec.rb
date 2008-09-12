@@ -10,14 +10,14 @@ describe Merb::Test::MultipartRequestHelper do
 
   describe "#dispatch_multipart_to" do
 
-    before(:all) do
+    before(:all) do 
       @controller_klass = Merb::Test::DispatchController
     end
 
     it "should dispatch to the given controller and action" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:index)
 
-      dispatch_multipart_to(@controller_klass, :index)
+      dispatch_multipart_to(@controller_klass, :index)    
     end
 
     it "should dispatch to the given controller and action with params" do
@@ -47,18 +47,18 @@ describe Merb::Test::MultipartRequestHelper do
         r.resources :spec_helper_controller
       end
     end
-
+  
     it "should post to the create action" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:create)
       multipart_post("/spec_helper_controller")
     end
-
+  
     it "should post to the create action with params" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:create)
       controller = multipart_post("/spec_helper_controller", :name => "Harry")
       controller.params[:name].should == "Harry"
     end
-
+  
     it "should upload a file to the action using multipart" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:create)
       file_name = File.join(File.dirname(__FILE__), "multipart_upload_text_file.txt")
@@ -71,7 +71,7 @@ describe Merb::Test::MultipartRequestHelper do
         file_params[:filename].should == "multipart_upload_text_file.txt"
       end
     end
-
+  
   end
 
   describe "#multipart_put" do
@@ -84,14 +84,14 @@ describe Merb::Test::MultipartRequestHelper do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:update)
       multipart_put("/spec_helper_controller/1")
     end
-
+  
     it "should put to the update action with multipart params" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:update)
       controller = multipart_put("/spec_helper_controller/my_id", :name => "Harry")
       controller.params[:name].should == "Harry"
       controller.params[:id].should   == "my_id"
     end
-
+  
     it "should upload a file to the action using multipart" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:update)
       file_name = File.join(File.dirname(__FILE__), "multipart_upload_text_file.txt")
@@ -133,7 +133,7 @@ module Merb::Test::MultipartRequestHelper
       Param.should_receive(:new).with('normal', 'normal_param').and_return(@fake_return_param)
       Post.new.push_params(params)
     end
-
+  
     it "should create FileParam from params when param does response to read" do
       file_param = mock('file param')
       file_param.should_receive(:read).and_return('file contents')
@@ -143,7 +143,7 @@ module Merb::Test::MultipartRequestHelper
       Post.new.push_params(params)
     end
   end
-
+  
   describe Post, '#to_multipart' do
     it "should create a multipart request from the params" do
       file_param = mock('file param')

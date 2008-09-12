@@ -32,7 +32,7 @@ describe "namespaced resource(s) routes" do
     end
     route_to('/admin/blogposts', :method => :get).should have_route(:controller => 'blogposts', :action => 'index', :id => nil, :namespace => 'admin')
   end
-
+  
   it "should match a get to /admin/foo to the foo controller and show action" do
     Merb::Router.prepare do |r|
       r.namespace :admin do |admin|
@@ -80,7 +80,7 @@ describe "namespaced resource(s) routes" do
     route_to("/blogposts", :method =>:get).should have_route(:controller => 'blogposts', :action => 'index', :id => nil, :namespace => "admin")
     route_to("/blogposts/1/foo", :method =>:get).should have_route(:controller => 'foo', :action => 'show', :blogpost_id => '1', :namespace => "admin")
   end
-
+  
   it "should match a get to /blogposts/1/foo to the foo controller without a namespace" do
     Merb::Router.prepare do |r|
       r.resources :blogposts, :namespace => "admin" do |blogposts|
@@ -89,7 +89,7 @@ describe "namespaced resource(s) routes" do
     end
     route_to("/blogposts/1/foo", :method =>:get).should have_route(:controller => 'foo', :action => 'show', :blogpost_id => '1', :namespace => nil)
   end
-
+  
   it "should match a get to /my_admin/blogposts to the blogposts controller with a custom patch setting" do
     Merb::Router.prepare do |r|
       r.namespace(:admin, :path=>"my_admin") do |admin|

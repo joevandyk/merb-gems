@@ -1,22 +1,22 @@
 class Exception
   def action_name() self.class.action_name end
-
+  
   def same?(other)
     self.class == other.class &&
     self.message == other.message &&
     self.backtrace == other.backtrace
   end
-
+  
   def self.action_name
     if self == Exception
-      return nil unless Object.const_defined?(:Exceptions) &&
+      return nil unless Object.const_defined?(:Exceptions) && 
         Exceptions.method_defined?(:exception)
     end
     name = self.to_s.split('::').last.snake_case
-    Object.const_defined?(:Exceptions) &&
+    Object.const_defined?(:Exceptions) && 
       Exceptions.method_defined?(name) ? name : superclass.action_name
   end
-
+  
   def self.status
     500
   end
@@ -53,23 +53,23 @@ module Merb
   # As usual, the not_found action will look for a template in
   #   app/views/exceptions/not_found.html.erb
   #
-  # Note: All standard ControllerExceptions have an HTTP status code associated
+  # Note: All standard ControllerExceptions have an HTTP status code associated 
   # with them which is sent to the browser when the action is rendered.
   #
-  # Note: If you do not specifiy how to handle raised ControllerExceptions
+  # Note: If you do not specifiy how to handle raised ControllerExceptions 
   # or an unhandlable exception occurs within your customised exception action
   # then they will be rendered using the built-in error template.
   # In development mode this "built in" template will show stack-traces for
   # any of the ServerError family of exceptions (you can force the stack-trace
-  # to display in production mode using the :exception_details config option in
+  # to display in production mode using the :exception_details config option in 
   # merb.yml)
   #
   #
-  # ==== Internal Exceptions
+  # ==== Internal Exceptions 
   #
-  # Any other rogue errors (not ControllerExceptions) that occur during the
-  # execution of your app will be converted into the ControllerException
-  # InternalServerError. And like all other exceptions, the ControllerExceptions
+  # Any other rogue errors (not ControllerExceptions) that occur during the 
+  # execution of your app will be converted into the ControllerException 
+  # InternalServerError. And like all other exceptions, the ControllerExceptions  
   # can be caught on your Exceptions controller.
   #
   # InternalServerErrors return status 500, a common use for customizing this
@@ -79,20 +79,20 @@ module Merb
 
   #   def internal_server_error
   #     MySpecialMailer.deliver(
-  #       "team@cowboys.com",
-  #       "Exception occured at #{Time.now}",
+  #       "team@cowboys.com", 
+  #       "Exception occured at #{Time.now}", 
   #       params[:exception])
   #     render 'Something is wrong, but the team is on it!'
   #   end
   #
-  # Note: The special param[:exception] is available in all Exception actions
+  # Note: The special param[:exception] is available in all Exception actions 
   # and contains the ControllerException that was raised (this is handy if
   # you want to display the associated message or display more detailed info)
   #
   #
   # ==== Extending ControllerExceptions
   #
-  # To extend the use of the ControllerExceptions one may extend any of the
+  # To extend the use of the ControllerExceptions one may extend any of the 
   # HTTPError classes.
   #
   # As an example we can create an exception called AdminAccessRequired.
@@ -109,13 +109,13 @@ module Merb
   #   end
   #
   # In app/views/exceptions/admin_access_required.rhtml
-  #
+  # 
   #   <h1>You're not an administrator!</h1>
-  #   <p>You tried to access <%= @tried_to_access %> but that URL is
+  #   <p>You tried to access <%= @tried_to_access %> but that URL is 
   #   restricted to administrators.</p>
   #
   module ControllerExceptions
-
+    
     # Mapping of status code names to their numeric value.
     STATUS_CODES = {}
 
@@ -139,7 +139,7 @@ module Merb
           const_get(:STATUS) rescue 0
         end
         alias :to_i :status
-
+        
         # Set the actual status-code for an Exception class.
         #
         # If possible, set the STATUS constant, and update
@@ -153,7 +153,7 @@ module Merb
             self.const_set(:STATUS, num.to_i)
           end
         end
-
+      
         # See if a status-code has been defined (on self explicitly).
         #
         # ==== Returns
@@ -161,7 +161,7 @@ module Merb
         def status?
           self.const_defined?(:STATUS)
         end
-
+      
         # Registers any subclasses with status codes for easy lookup by
         # set_status in Merb::Controller.
         #
@@ -169,7 +169,7 @@ module Merb
         # it goes all the way down the chain of inheritance.
         #
         # ==== Parameters
-        #
+        # 
         # subclass<Merb::ControllerExceptions::Base>::
         #   The Exception class that is inheriting from Merb::ControllerExceptions::Base
         def inherited(subclass)
@@ -177,9 +177,9 @@ module Merb
           # unless self.status = ... is set explicitly, the status code will be inherited
           register_status_code(subclass, self.status) if self.status?
         end
-
+        
         private
-
+        
         # Register the status-code for an Exception class.
         #
         # ==== Parameters
@@ -188,7 +188,7 @@ module Merb
           name = self.to_s.split('::').last.snake_case
           STATUS_CODES[name.to_sym] = code.to_i
         end
-
+        
       end
     end
 
@@ -288,7 +288,7 @@ module Merb
 
       class HTTPVersionNotSupported     < Merb::ControllerExceptions::ServerError; self.status = 505; end
 
-      class InternalServerError         < Merb::ControllerExceptions::ServerError #:doc:
+      class InternalServerError         < Merb::ControllerExceptions::ServerError #:doc: 
         self.status = 500;
         def initialize(exception = nil)
           @exception = exception
@@ -303,13 +303,13 @@ module Merb
         end
       end
   end
-
+  
   # Required to show exceptions in the log file
   #
   # e<Exception>:: The exception that a message is being generated for
   def self.exception(e)
-    "#{ e.message } - (#{ e.class })\n" <<
-    "#{(e.backtrace or []).join("\n")}"
+    "#{ e.message } - (#{ e.class })\n" <<  
+    "#{(e.backtrace or []).join("\n")}" 
   end
 
 end

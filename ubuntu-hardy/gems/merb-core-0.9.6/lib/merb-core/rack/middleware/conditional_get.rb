@@ -11,10 +11,10 @@ module Merb
           # set Date header using RFC1123 date format as specified by HTTP
           # RFC2616 section 3.3.1.
         end
-
+        
         [status, headers, body]
       end
-
+    
     private
       def document_not_modified?(env, headers)
         if etag = headers[Merb::Const::ETAG]
@@ -24,6 +24,6 @@ module Merb
         end
       end
     end
-
+    
   end
 end

@@ -18,7 +18,7 @@ require 'merb-core' / 'vendor' / 'facets'
 module Merb
   # Create stub module for global controller helpers.
   module GlobalHelpers; end
-
+  
   class << self
 
     # Merge environment settings
@@ -47,20 +47,20 @@ module Merb
           :db_env => Merb.environment
         }
       end
-
+      
       #Only load if it hasn't been loaded
       unless Merb.environment_info[:merged_envs].member? env
         Merb.environment_info[:merged_envs] << env
-
+        
         env_file = Merb.dir_for(:config) / "environments" / ("#{env}.rb")
         if File.exists?(env_file)
           load(env_file)
         else
           Merb.logger.warn! "Environment file does not exist! #{env_file}"
         end
-
+        
       end
-
+      
       # Mark specific environment to load when ORM loads,
       # if multiple environments are loaded, the last one
       # with use_db as TRUE will be loaded
@@ -324,7 +324,7 @@ module Merb
     def orm
       @orm ||= :none
     end
-
+    
     # @deprecated
     def orm_generator_scope
       Merb.logger.warn!("WARNING: Merb.orm_generator_scope is deprecated")
@@ -339,13 +339,13 @@ module Merb
     def test_framework
       @test_framework ||= :rspec
     end
-
+    
     # @deprecated
     def test_framework_generator_scope
       Merb.logger.warn!("WARNING: Merb.test_framework_generator_scope is deprecated")
       Merb.test_framework
     end
-
+    
     # Returns the default template engine for this application. For instance :haml.
     #
     # ==== Returns
@@ -364,9 +364,9 @@ module Merb
     # use NO_BUNDLE=true to disable local gems).
     #
     # ==== Notes
-    # Bundling required gems makes your application independent from the
-    # environment it runs in. This is a good practice to freeze application
-    # framework and gems it uses and very useful when application is run in
+    # Bundling required gems makes your application independent from the 
+    # environment it runs in. This is a good practice to freeze application 
+    # framework and gems it uses and very useful when application is run in 
     # some sort of sandbox, for instance, shared hosting with preconfigured gems.
     def bundled?
       ENV.key?("BUNDLE") || Merb::Config[:bundle] || ENV.key?("NO_BUNDLE")
@@ -535,7 +535,7 @@ module Merb
     def rakefiles
       @rakefiles ||= ['merb-core/test/tasks/spectasks']
     end
-
+    
     # === Returns
     # Array(String):: Paths generators are loaded from
     #
@@ -555,7 +555,7 @@ module Merb
       @rakefiles ||= ['merb-core/test/tasks/spectasks']
       @rakefiles += rakefiles
     end
-
+    
     # ==== Parameters
     # *generators:: Generator paths to add to the list of generators.
     #

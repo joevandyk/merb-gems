@@ -12,7 +12,7 @@ Merb.start :environment => 'test'
 
 module Merb::Test::Behaviors
   include Merb::Test::RequestHelper
-
+  
   def dispatch_should_make_body(klass, body, action = :index, opts = {}, env = {}, &blk)
     klass = Merb::Test::Fixtures::Abstract.const_get(klass)
     if opts.key?(:presets)

@@ -12,13 +12,13 @@ module Merb::Test::Fixtures
         "Dispatched"
       end
     end
-
+    
     class NotAController
       def index
         "Dispatched"
       end
     end
-
+    
     class RaiseGone < Testing
       def index
         raise Gone

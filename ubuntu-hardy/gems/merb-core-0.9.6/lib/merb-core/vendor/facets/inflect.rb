@@ -275,8 +275,8 @@ module English
     word 'cow'       , 'kine'
     word 'datum'     , 'data'
     word 'basis'     , 'bases'
-    word 'diagnosis' , 'diagnoses'
-
+    word 'diagnosis' , 'diagnoses'    
+    
     # One-way singularization exception (convert plural to singular).
 
     # General rules.
@@ -324,8 +324,8 @@ module English
     #plural_rule 'fe' , 'ves' # safe, wife
     plural_rule 's'   , 'ses'
     plural_rule 'ive' , 'ives' # don't want to snag wife
-    plural_rule 'fe'  , 'ves'  # don't want to snag perspectives
-
+    plural_rule 'fe'  , 'ves'  # don't want to snag perspectives  
+    
 
   end
 end

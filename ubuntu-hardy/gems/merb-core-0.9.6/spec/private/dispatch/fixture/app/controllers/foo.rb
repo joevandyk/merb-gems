@@ -11,9 +11,9 @@ class Foo < Application
   def raise_conflict
     raise Conflict
   end
-
+  
   def raise_not_acceptable
     raise NotAcceptable
   end
-
-end
+  
+end  

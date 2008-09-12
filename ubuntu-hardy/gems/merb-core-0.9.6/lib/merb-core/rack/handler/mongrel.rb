@@ -38,7 +38,7 @@ module Merb
           yield server  if block_given?
           server.run.join
         end
-
+  
         # ==== Parameters
         # app<Merb::Rack::Application>:: The app that Mongrel should handle.
         def initialize(app)
@@ -52,25 +52,25 @@ module Merb
           env = {}.replace(request.params)
           env.delete "HTTP_CONTENT_TYPE"
           env.delete "HTTP_CONTENT_LENGTH"
-
+  
           env["SCRIPT_NAME"] = ""  if env["SCRIPT_NAME"] == "/"
-
+  
           env.update({"rack.version" => [0,1],
                        "rack.input" => request.body || StringIO.new(""),
                        "rack.errors" => STDERR,
-
+  
                        "rack.multithread" => true,
                        "rack.multiprocess" => false, # ???
                        "rack.run_once" => false,
-
+  
                        "rack.url_scheme" => "http",
                        "rack.streaming" => true
                      })
           env["QUERY_STRING"] ||= ""
           env.delete "PATH_INFO"  if env["PATH_INFO"] == ""
-
+  
           status, headers, body = @app.call(env)
-
+  
           begin
             response.status = status.to_i
             headers.each { |k, vs|
@@ -78,10 +78,10 @@ module Merb
                 response.header[k] = v
               }
             }
-
+            
             if Proc === body
               body.call(response)
-            else
+            else  
               body.each { |part|
                 response.body << part
               }

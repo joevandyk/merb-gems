@@ -21,7 +21,7 @@
     </div>
   </div>
   <% end %>
-
+  
   <div class="internalError">
     <div class="header">
       <h1>Request Details</h1>
@@ -38,7 +38,7 @@
 
       <h3>Named Routes</h3>
       <%= listing("Name", "Route", Merb::Router.named_routes) %>
-    </div>
+    </div>      
   </div>
   <% end %>
 
@@ -46,7 +46,7 @@
   <div class="internalError" id="exception_<%= i %>">
     <div class="header">
       <h1>
-        <%= humanize_exception(exception) %>
+        <%= humanize_exception(exception) %> 
         <sup class="error_<%= exception.class.status %>"><%= exception.class.status %></sup>
       </h1>
       <%= error_codes(exception) %>
@@ -66,7 +66,7 @@
         <% type, shortname, filename, lineno, location = frame_details(line) %>
         <tbody class="close <%= type %>" <%= "style='display:none'" unless type == "app" %>>
           <tr class="file">
-            <td class="expand"><div>&nbsp;</div></td>
+            <td class="expand"><div>&nbsp;</div></td>              
             <td class="path">
               <%= shortname %>
               <% if filename && filename.match(/\.erb$/) %>

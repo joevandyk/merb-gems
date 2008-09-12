@@ -5,7 +5,7 @@ module Merb
 
     class WEBrick
       # start WEBrick server on given host and port.
-
+      
       # ==== Parameters
       # opts<Hash>:: Options for WEBrick (see below).
       #
@@ -15,7 +15,7 @@ module Merb
       # :app<String>>:: The application name.
       def self.start(opts={})
         Merb.logger.warn!("Using Webrick adapter")
-
+      
         options = {
           :Port        => opts[:port],
           :BindAddress => opts[:host],
@@ -25,7 +25,7 @@ module Merb
             [Merb.logger, ::WEBrick::AccessLog::REFERER_LOG_FORMAT]
           ]
         }
-
+     
         server = ::WEBrick::HTTPServer.new(options)
         Merb::Server.change_privilege
         server.mount("/", ::Rack::Handler::WEBrick, opts[:app])

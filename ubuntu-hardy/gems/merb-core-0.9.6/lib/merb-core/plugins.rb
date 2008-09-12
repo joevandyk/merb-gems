@@ -20,7 +20,7 @@ module Merb
     def self.rakefiles
       Merb.rakefiles
     end
-
+    
     # ==== Returns
     # Array(String):: All Generator load paths Merb uses for plugins.
     def self.generators
@@ -44,7 +44,7 @@ module Merb
     def self.add_rakefiles(*rakefiles)
       Merb.add_rakefiles(*rakefiles)
     end
-
+    
     # ==== Parameters
     # *generators:: Generator paths to add to the list of plugin generators.
     #

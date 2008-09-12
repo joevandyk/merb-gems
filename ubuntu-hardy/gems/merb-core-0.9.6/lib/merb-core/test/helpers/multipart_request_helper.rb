@@ -81,11 +81,11 @@ module Merb::Test::MultipartRequestHelper
       query = @multipart_params.collect { |param| "--" + BOUNDARY + "\r\n" + param.to_multipart }.join("") + "--" + BOUNDARY + "--"
       return query, CONTENT_TYPE
     end
-  end
+  end 
 
-  # Similar to dispatch_to but allows for sending files inside params.
+  # Similar to dispatch_to but allows for sending files inside params.  
   #
-  # ==== Paramters
+  # ==== Paramters 
   # controller_klass<Controller>::
   #   The controller class object that the action should be dispatched to.
   # action<Symbol>:: The action name, as a symbol.
@@ -95,7 +95,7 @@ module Merb::Test::MultipartRequestHelper
   #   An optional hash that is passed to the fake request. Any request options
   #   should go here (see +fake_request+).
   # &blk:: The block is executed in the context of the controller.
-  #
+  #  
   # ==== Example
   #   dispatch_multipart_to(MyController, :create, :my_file => @a_file ) do |controller|
   #     controller.stub!(:current_user).and_return(@user)
@@ -103,7 +103,7 @@ module Merb::Test::MultipartRequestHelper
   #
   # ==== Notes
   # Set your option to contain a file object to simulate file uploads.
-  #
+  #   
   # Does not use routes.
   #---
   # @public
@@ -151,14 +151,14 @@ module Merb::Test::MultipartRequestHelper
     env[:test_with_multipart] = true
     request(path, params, env, &block)
   end
-
+  
   # ==== Parameters
   # env<Hash>::
   #   An optional hash that is passed to the fake request. Any request options
   #   should go here (see +fake_request+).
   # params<Hash>::
   #   An optional hash that will end up as params in the controller instance.
-  #
+  # 
   # ==== Returns
   # FakeRequest::
   #   A multipart Request object that is built based on the parameters.
@@ -168,7 +168,7 @@ module Merb::Test::MultipartRequestHelper
     else
       m = Post.new(params)
       body, head = m.to_multipart
-      fake_request(env.merge( :content_type => head,
+      fake_request(env.merge( :content_type => head, 
                               :content_length => body.length), :post_body => body)
     end
   end

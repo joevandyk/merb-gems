@@ -6,11 +6,11 @@ module Merb
         super(app)
         @static_server = ::Rack::File.new(directory)
       end
-
-      def call(env)
+      
+      def call(env)        
         path = env['PATH_INFO'] ? env['PATH_INFO'].chomp('/') : ""
         cached_path = (path.empty? ? 'index' : path) + '.html'
-
+        
         if file_exist?(path) && env['REQUEST_METHOD'] =~ /GET|HEAD/ # Serve the file if it's there and the request method is GET or HEAD
           serve_static(env)
         elsif file_exist?(cached_path) && env['REQUEST_METHOD'] =~ /GET|HEAD/ # Serve the page cache if it's there and the request method is GET or HEAD
@@ -22,7 +22,7 @@ module Merb
           @app.call(env)
         end
       end
-
+      
        # ==== Parameters
         # path<String>:: The path to the file relative to the server root.
         #
@@ -36,10 +36,10 @@ module Merb
         # ==== Parameters
         # env<Hash>:: Environment variables to pass on to the server.
         def serve_static(env)
-          env["PATH_INFO"] = ::Merb::Request.unescape(env["PATH_INFO"])
+          env["PATH_INFO"] = ::Merb::Request.unescape(env["PATH_INFO"])        
           @static_server.call(env)
         end
-
+      
     end
   end
 end

@@ -7,12 +7,12 @@ describe Merb::Config do
     ARGV.replace([])
     Merb::Server.should_receive(:start).and_return(nil)
   end
-
+  
   it "should load the runner adapter by default" do
-    Merb.start
+    Merb.start 
     Merb::Config[:adapter].should == "runner"
   end
-
+  
   it "should load mongrel adapter when running `merb`" do
     load(MERB_BIN)
     Merb::Config[:adapter].should == "mongrel"
@@ -22,8 +22,8 @@ describe Merb::Config do
     ARGV.push *%w[-a other]
     load(MERB_BIN)
     Merb::Config[:adapter].should == "other"
-  end
-
+  end  
+  
   it "should load irb adapter when running `merb -i`" do
     ARGV << '-i'
     load(MERB_BIN)

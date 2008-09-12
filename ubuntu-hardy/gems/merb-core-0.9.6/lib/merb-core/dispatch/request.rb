@@ -1,12 +1,12 @@
 require 'tempfile'
 
 module Merb
-
+  
   class Request
     # def env def exceptions def route_params
     attr_accessor :env, :exceptions, :route
     attr_reader :route_params
-
+    
     # by setting these to false, auto-parsing is disabled; this way you can
     # do your own parsing instead
     cattr_accessor :parse_multipart_params, :parse_json_params,
@@ -14,7 +14,7 @@ module Merb
     self.parse_multipart_params = true
     self.parse_json_params = true
     self.parse_xml_params = true
-
+    
     # Flash, and some older browsers can't use arbitrary
     # request methods -- i.e., are limited to GET/POST.
     # These user-agents can make POST requests in combination
@@ -23,29 +23,29 @@ module Merb
     # in the params, or an X-HTTP-Method-Override header
     cattr_accessor :http_method_overrides
     self.http_method_overrides = []
-
+    
     # Initialize the request object.
     #
     # ==== Parameters
-    # http_request<~params:~[], ~body:IO>::
+    # http_request<~params:~[], ~body:IO>:: 
     #   An object like an HTTP Request.
     def initialize(rack_env)
       @env  = rack_env
       @body = rack_env['rack.input']
       @route_params = {}
     end
-
+    
     def controller
       unless params[:controller]
-        raise ControllerExceptions::NotFound,
+        raise ControllerExceptions::NotFound, 
           "Route matched, but route did not specify a controller.\n" +
           "Did you forgot to add :controller => \"people\" or :controller " +
-          "segment to route definition?\nHere is what's specified:\n" +
+          "segment to route definition?\nHere is what's specified:\n" + 
           request.route_params.inspect
       end
       path = [params[:namespace], params[:controller]].compact.join("/")
       controller = path.snake_case.to_const_string
-
+      
       begin
         Object.full_const_get(controller)
       rescue NameError => e
@@ -54,7 +54,7 @@ module Merb
         raise ControllerExceptions::NotFound, msg
       end
     end
-
+    
     METHODS = %w{get post put delete head options}
 
     # ==== Returns
@@ -83,7 +83,7 @@ module Merb
         end
       end
     end
-
+    
     # create predicate methods for querying the REQUEST_METHOD
     # get? post? head? put? etc
     METHODS.each do |m|
@@ -122,15 +122,15 @@ module Merb
     def redirects?
       route.redirects?
     end
-
+    
     private
-
+    
     # ==== Returns
     # Hash:: Parameters passed from the URL like ?blah=hello.
     def query_params
       @query_params ||= self.class.query_parse(query_string || '')
     end
-
+    
     # Parameters passed in the body of the request. Ajax calls from
     # prototype.js and other libraries pass content this way.
     #
@@ -164,7 +164,7 @@ module Merb
     # ==== Returns
     # Hash:: The parsed multipart parameters.
     def multipart_params
-      @multipart_params ||=
+      @multipart_params ||= 
         begin
           # if the content-type is multipart
           # parse the multipart. Otherwise return {}
@@ -172,7 +172,7 @@ module Merb
             self.class.parse_multipart(@body, $1, content_length)
           else
             {}
-          end
+          end  
         rescue ControllerExceptions::MultiPartParseError => e
           @multipart_params = {}
           raise e
@@ -205,9 +205,9 @@ module Merb
         end
       end
     end
-
+    
     public
-
+    
     # ==== Returns
     # Mash:: All request parameters.
     #
@@ -216,14 +216,14 @@ module Merb
     # request string.
     def params
       @params ||= begin
-        h = body_and_query_params.merge(route_params)
+        h = body_and_query_params.merge(route_params)      
         h.merge!(multipart_params) if self.class.parse_multipart_params && multipart_params
         h.merge!(json_params) if self.class.parse_json_params && json_params
         h.merge!(xml_params) if self.class.parse_xml_params && xml_params
         h
       end
     end
-
+    
     def message
       return {} unless params[:_message]
       begin
@@ -237,14 +237,14 @@ module Merb
     def reset_params!
       @params = nil
     end
-
+    
     # ==== Returns
     # String:: The raw post.
     def raw_post
       @body.rewind if @body.respond_to?(:rewind)
       @raw_post ||= @body.read
     end
-
+    
     # ==== Returns
     # Boolean:: If the request is an XML HTTP request.
     def xml_http_request?
@@ -252,23 +252,23 @@ module Merb
     end
     alias xhr? :xml_http_request?
     alias ajax? :xml_http_request?
-
+    
     # ==== Returns
     # String:: The remote IP address.
     def remote_ip
       return @env['HTTP_CLIENT_IP'] if @env.include?('HTTP_CLIENT_IP')
-
+    
       if @env.include?(Merb::Const::HTTP_X_FORWARDED_FOR) then
         remote_ips = @env[Merb::Const::HTTP_X_FORWARDED_FOR].split(',').reject do |ip|
           ip =~ /^unknown$|^(127|10|172\.16|192\.168)\./i
         end
-
+    
         return remote_ips.first.strip unless remote_ips.empty?
       end
-
+    
       return @env[Merb::Const::REMOTE_ADDR]
     end
-
+    
     # ==== Returns
     # String::
     #   The protocol, i.e. either "https://" or "http://" depending on the
@@ -276,25 +276,25 @@ module Merb
     def protocol
       ssl? ? 'https://' : 'http://'
     end
-
+    
     # ==== Returns
     # Boolean::: True if the request is an SSL request.
     def ssl?
       @env['HTTPS'] == 'on' || @env['HTTP_X_FORWARDED_PROTO'] == 'https'
     end
-
+    
     # ==== Returns
     # String:: The HTTP referer.
     def referer
       @env['HTTP_REFERER']
     end
-
+    
     # ==== Returns
     # String:: The full URI, including protocol and host
     def full_uri
       protocol + host + uri
     end
-
+    
     # ==== Returns
     # String:: The request URI.
     def uri
@@ -382,7 +382,7 @@ module Merb
     # ==== Returns
     # String:: The query string.
     def query_string
-      @env['QUERY_STRING']
+      @env['QUERY_STRING']  
     end
 
     # ==== Returns
@@ -396,7 +396,7 @@ module Merb
     def content_length
       @content_length ||= @env[Merb::Const::CONTENT_LENGTH].to_i
     end
-
+    
     # ==== Returns
     # String::
     #   The URI without the query string. Strips trailing "/" and reduces
@@ -406,25 +406,25 @@ module Merb
       path = path[0..-2] if (path[-1] == ?/) && path.size > 1
       path
     end
-
+    
     # ==== Returns
     # String:: The path info.
     def path_info
       @path_info ||= self.class.unescape(@env['PATH_INFO'])
     end
-
+    
     # ==== Returns
     # Fixnum:: The server port.
     def port
       @env['SERVER_PORT'].to_i
     end
-
+    
     # ==== Returns
     # String:: The full hostname including the port.
     def host
-      @env['HTTP_X_FORWARDED_HOST'] || @env['HTTP_HOST']
+      @env['HTTP_X_FORWARDED_HOST'] || @env['HTTP_HOST'] 
     end
-
+    
     # ==== Parameters
     # tld_length<Fixnum>::
     #   Number of domains levels to inlclude in the top level domain. Defaults
@@ -436,7 +436,7 @@ module Merb
       parts = host.split('.')
       parts[0..-(tld_length+2)]
     end
-
+    
     # ==== Parameters
     # tld_length<Fixnum>::
     #   Number of domains levels to inlclude in the top level domain. Defaults
@@ -461,9 +461,9 @@ module Merb
         Time.rfc2822(time)
       end
     end
-
+    
     class << self
-
+      
       # ==== Parameters
       # value<Array, Hash, Dictionary ~to_s>:: The value for the query string.
       # prefix<~to_s>:: The prefix to add to the query string keys.
@@ -497,7 +497,7 @@ module Merb
           "#{prefix}=#{Merb::Request.escape(value)}"
         end
       end
-
+      
       # ==== Parameters
       # s<String>:: String to URL escape.
       #
@@ -519,7 +519,7 @@ module Merb
           [$1.delete('%')].pack('H*')
         }
       end
-
+      
       # ==== Parameters
       # query_string<String>:: The query string.
       # delimiter<String>:: The query string divider. Defaults to "&".
@@ -539,7 +539,7 @@ module Merb
         end
         preserve_order ? query : query.to_mash
       end
-
+    
       NAME_REGEX = /Content-Disposition:.* name="?([^\";]*)"?/ni.freeze
       CONTENT_TYPE_REGEX = /Content-Type: (.*)\r\n/ni.freeze
       FILENAME_REGEX = /Content-Disposition:.* filename="?([^\";]*)"?/ni.freeze
@@ -586,19 +586,19 @@ module Merb
               filename = head[FILENAME_REGEX, 1]
               content_type = head[CONTENT_TYPE_REGEX, 1]
               name = head[NAME_REGEX, 1]
-
+            
               if filename && !filename.empty?
                 body = Tempfile.new(:Merb)
                 body.binmode if defined? body.binmode
               end
               next
             end
-
+          
             # Save the read body part.
             if head && (boundary_size+4 < buf.size)
               body << buf.slice!(0, buf.size - (boundary_size+4))
             end
-
+          
             read_size = bufsize < content_length ? bufsize : content_length
             if( read_size > 0 )
               c = input.read(read_size)
@@ -607,22 +607,22 @@ module Merb
               content_length -= c.size
             end
           end
-
+        
           # Save the rest.
           if i = buf.index(rx)
             body << buf.slice!(0, i)
             buf.slice!(0, boundary_size+2)
-
+          
             content_length = -1  if $1 == "--"
           end
-
-          if filename && !filename.empty?
+        
+          if filename && !filename.empty?   
             body.rewind
-            data = {
-              :filename => File.basename(filename),
-              :content_type => content_type,
-              :tempfile => body,
-              :size => File.size(body.path)
+            data = { 
+              :filename => File.basename(filename),  
+              :content_type => content_type,  
+              :tempfile => body, 
+              :size => File.size(body.path) 
             }
           else
             data = body
@@ -647,7 +647,7 @@ module Merb
         name =~ %r([\[\]]*([^\[\]]+)\]*)
         key = $1 || ''
         after = $' || ''
-
+        
         if after == ""
           parms[key] = val
         elsif after == "[]"
@@ -663,4 +663,4 @@ module Merb
       end
     end
   end
-end
+end    

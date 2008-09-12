@@ -115,7 +115,7 @@ module Merb
 
         # Environment variables always win
         options[:environment] = ENV["MERB_ENV"] if ENV["MERB_ENV"]
-
+        
         # Enable bundled gems by default; used by bundled?
         options[:bundle] = true
 
@@ -241,7 +241,7 @@ module Merb
           opts.on("-V", "--verbose", "Print extra information") do
             options[:verbose] = true
           end
-
+          
           opts.on("-B", "--[no-]bundle", "Run application using bundled gems. Enabled by default.") do |b|
             options[:bundle] = b
           end

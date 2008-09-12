@@ -46,12 +46,12 @@ end
 
 describe Merb::Router::Behavior, "#defer_to" do
   before :each do
-    Merb::Router.prepare do |r|
+    Merb::Router.prepare do |r|      
       r.match("/deferred/:zoo").defer_to do |request, params|
         params.merge(:controller => "w00t") if params[:zoo]
       end
       r.default_routes
-    end
+    end    
   end
 
   it "registers route properly so it has index" do

@@ -74,7 +74,7 @@ module Merb
         end
         self.subclasses = subklasses
       end
-
+      
       # Determines whether or not a specific bootloader has finished yet.
       #
       # ==== Parameters
@@ -147,7 +147,7 @@ class Merb::BootLoader::Logger < Merb::BootLoader
     Merb.logger = Merb::Logger.new(Merb.log_file, Merb::Config[:log_level], Merb::Config[:log_delimiter], Merb::Config[:log_auto_flush])
     print_warnings
   end
-
+  
   def self.print_warnings
     if Gem::Version.new(Gem::RubyGemsVersion) < Gem::Version.new("1.1")
       Merb.logger.warn! "Merb requires Rubygems 1.1 and later. Please upgrade RubyGems with gem update --system."
@@ -320,7 +320,7 @@ class Merb::BootLoader::MixinSession < Merb::BootLoader
   # plugin session stores for example - these need to be loaded in a
   # before_app_loads block or a BootLoader that runs after MixinSession.
   #
-  # Note: access to Merb::Config is needed, so it needs to run after
+  # Note: access to Merb::Config is needed, so it needs to run after 
   # Merb::BootLoader::Dependencies is done.
   def self.run
     require 'merb-core/dispatch/session'
@@ -363,7 +363,7 @@ class Merb::BootLoader::LoadClasses < Merb::BootLoader
 
       # Load application file if it exists - for flat applications
       load_file Merb.dir_for(:application) if File.file?(Merb.dir_for(:application))
-
+      
       # Load classes and their requirements
       Merb.load_paths.each do |component, path|
         next unless path.last && component != :application
@@ -372,7 +372,7 @@ class Merb::BootLoader::LoadClasses < Merb::BootLoader
 
       Merb::Controller.send :include, Merb::GlobalHelpers
     end
-
+    
     # ==== Parameters
     # file<String>:: The file to load.
     def load_file(file)
@@ -381,7 +381,7 @@ class Merb::BootLoader::LoadClasses < Merb::BootLoader
       LOADED_CLASSES[file] = ObjectSpace.classes - klasses
       MTIMES[file] = File.mtime(file)
     end
-
+    
     # Load classes from given paths - using path/glob pattern.
     #
     # *paths<Array>::
@@ -405,7 +405,7 @@ class Merb::BootLoader::LoadClasses < Merb::BootLoader
     def reload(file)
       remove_classes_in_file(file) { |f| load_file(f) }
     end
-
+    
     # Reload the router to regenerate all routes.
     def reload_router!
       if File.file?(router_file = Merb.dir_for(:router) / Merb.glob_for(:router))
@@ -413,7 +413,7 @@ class Merb::BootLoader::LoadClasses < Merb::BootLoader
         reload router_file
       end
     end
-
+    
     # ==== Parameters
     # file<String>:: The file to remove classes for.
     # &block:: A block to call with the file that has been removed.
@@ -451,7 +451,7 @@ class Merb::BootLoader::LoadClasses < Merb::BootLoader
         Merb.logger.debug("Failed to remove constant #{object} from #{base}")
       end
     end
-
+    
     private
 
     # "Better loading" of classes.  If a class fails to load due to a NameError
@@ -561,13 +561,13 @@ class Merb::BootLoader::MimeTypes < Merb::BootLoader
 end
 
 class Merb::BootLoader::Cookies < Merb::BootLoader
-
+  
   def self.run
     require 'merb-core/dispatch/cookies'
     Merb::Controller.send(:include, Merb::CookiesMixin)
     Merb::Request.send(:include, Merb::CookiesMixin::RequestMixin)
   end
-
+  
 end
 
 class Merb::BootLoader::SetupSession < Merb::BootLoader
@@ -580,22 +580,22 @@ class Merb::BootLoader::SetupSession < Merb::BootLoader
       base_name = File.basename(file, ".rb")
       require file unless base_name == "container" || base_name == "store_container"
     end
-
+    
     # Set some defaults.
     Merb::Config[:session_id_key] ||= "_session_id"
-
+    
     # List of all session_stores from :session_stores and :session_store config options.
     config_stores = Merb::Config.session_stores
-
+    
     # Register all configured session stores - any loaded session container class
     # (subclassed from Merb::SessionContainer) will be available for registration.
     Merb::SessionContainer.subclasses.each do |class_name|
-      if(store = Object.full_const_get(class_name)) &&
+      if(store = Object.full_const_get(class_name)) && 
         config_stores.include?(store.session_store_type)
           Merb::Request.register_session_type(store.session_store_type, class_name)
       end
     end
-
+    
     # Mixin the Merb::Session module to add app-level functionality to sessions
     Merb::SessionContainer.send(:include, Merb::Session)
   end
@@ -667,7 +667,7 @@ class Merb::BootLoader::RackUpApplication < Merb::BootLoader
          run Merb::Rack::Application.new
        }.to_app
     end
-
+    
   end
 end
 
@@ -693,7 +693,7 @@ class Merb::BootLoader::ReloadClasses < Merb::BootLoader
     TimedExecutor.every(Merb::Config[:reload_time] || 0.5) do
       reload
     end
-
+    
   end
 
   # Reloads all files.

@@ -1,7 +1,7 @@
 module Merb
-
+  
   module Rack
-
+    
     class Runner
       # ==== Parameters
       # opts<Hash>:: Options for the runner (see below).
@@ -21,7 +21,7 @@ module Merb
             eval(opts[:runner_code], TOPLEVEL_BINDING, __FILE__, __LINE__)
           end
           exit
-        end
+        end  
       end
     end
   end

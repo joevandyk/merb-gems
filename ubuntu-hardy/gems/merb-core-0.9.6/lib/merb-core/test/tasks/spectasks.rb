@@ -8,7 +8,7 @@ namespace :spec do
   else
     SPEC_OPTS = ["--color", "--format", "specdoc"]
   end
-
+  
   Spec::Rake::SpecTask.new('default') do |t|
       t.spec_opts = SPEC_OPTS
     if(ENV['TASK'])
@@ -33,11 +33,11 @@ namespace :spec do
     t.spec_opts = SPEC_OPTS
     if(ENV['CONTROLLER'])
       t.spec_files = Dir["spec/controllers/**/#{ENV['CONTROLLER']}_spec.rb"].sort
-    else
+    else    
       t.spec_files = Dir['spec/controllers/**/*_spec.rb'].sort
     end
   end
-
+  
   desc "Run all view specs, run specs for a specific controller (and view) with CONTROLLER=MyController (VIEW=MyView)"
   Spec::Rake::SpecTask.new('view') do |t|
     t.spec_opts = SPEC_OPTS
@@ -63,6 +63,6 @@ namespace :spec do
     t.spec_files = Dir['spec/**/*_spec.rb'].sort
     t.libs = ['lib', 'server/lib' ]
     t.rcov = true
-    t.rcov_opts = ["--exclude 'config,spec,#{Gem::path.join(',')}'"]
+    t.rcov_opts = ["--exclude 'config,spec,#{Gem::path.join(',')}'"]    
   end
 end

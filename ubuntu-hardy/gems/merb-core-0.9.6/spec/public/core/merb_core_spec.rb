@@ -7,14 +7,14 @@ describe "Merb.env helpers" do
   after(:all) do
     Merb.environment = @orig_env
   end
-
+  
   it "should pickup the environment from env" do
     %w(development test production staging demo).each do |e|
       Merb.environment = e
       Merb.env.should == e
     end
   end
-
+  
   it "should correctly answer the question about which env it's in with symbol or string" do
     %w(development test production staging demo custom).each do |e|
       Merb.environment = e
@@ -22,14 +22,14 @@ describe "Merb.env helpers" do
       Merb.env?(e.to_sym).should be_true
     end
   end
-
+  
   it "should answer false if asked for an environment that is not current" do
     %w(development test production staging demo custom).each do |e|
       Merb.environment = e
       Merb.env?(:not_it).should be_false
     end
   end
-
+  
   it "should allow an environment to merge another environments settings" do
     %w(development test production staging demo custom).each do |e|
 
@@ -40,6 +40,6 @@ describe "Merb.env helpers" do
       Merb.environment_info[:merged_envs].first.should == "some_other_env"
     end
   end
-
-
+  
+  
 end

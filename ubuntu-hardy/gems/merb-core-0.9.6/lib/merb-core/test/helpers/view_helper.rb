@@ -44,7 +44,7 @@ module Merb
       # ==== Parameters
       # css_query<String>:: A CSS query to find the element for.
       # output<DocumentOutput>::
-      #   The output to look for the element in. Defaults to process_output.
+      #   The output to look for the element in. Defaults to process_output. 
       #
       # ==== Returns
       # String:: The content of the first tag matching the query.
@@ -55,7 +55,7 @@ module Merb
       # ==== Parameters
       # css_query<String>:: A CSS query to find the elements for.
       # output<DocumentOutput>::
-      #   The output to look for the element in. Defaults to process_output.
+      #   The output to look for the element in. Defaults to process_output. 
       #
       # ==== Returns
       # Array[String]:: Content of all tags matching the query.
@@ -66,18 +66,18 @@ module Merb
       # ==== Parameters
       # css_query<String>:: A CSS query to find the element for.
       # output<DocumentOutput>::
-      #   The output to look for the element in. Defaults to process_output.
+      #   The output to look for the element in. Defaults to process_output. 
       #
       # ==== Returns
       # Hpricot::Elem:: The first tag matching the query.
       def element(css_query, output = process_output)
         output[css_query].first
       end
-
+  
       # ==== Parameters
       # css_query<String>:: A CSS query to find the elements for.
       # output<DocumentOutput>::
-      #   The output to look for the elements in. Defaults to process_output.
+      #   The output to look for the elements in. Defaults to process_output. 
       #
       # ==== Returns
       # Array[Hpricot::Elem]:: All tags matching the query.
@@ -91,7 +91,7 @@ module Merb
       # css_query<String>:: A CSS query to find the elements for.
       # text<String, Regexp>:: A pattern to match tag contents for.
       # output<DocumentOutput>::
-      #   The output to look for the elements in. Defaults to process_output.
+      #   The output to look for the elements in. Defaults to process_output. 
       #
       # ==== Returns
       # Array[Hpricot::Elem]:: All tags matching the query and pattern.
@@ -103,7 +103,7 @@ module Merb
           else []
         end
       end
-
+  
       protected
 
         # ==== Returns
@@ -111,7 +111,7 @@ module Merb
         def process_output
           return @output unless @output.nil?
           return @output = DocumentOutput.new(@response_output) unless @response_output.nil?
-
+          
           raise "The response output was not in its usual places, please provide the output" if @controller.nil? || @controller.body.empty?
           @response_output = @controller.body
           @output = DocumentOutput.new(@controller.body)

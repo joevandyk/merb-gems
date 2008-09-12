@@ -11,7 +11,7 @@ module Merb::Test::Fixtures
         "partial/#{File.basename(controller)}/#{context}"
       end
     end
-
+    
     class BasicPartial < RenderIt
 
       def index
@@ -20,10 +20,10 @@ module Merb::Test::Fixtures
     end
 
     class WithAbsolutePartial < RenderIt
-
+      
       def index
         @absolute_partial_path = File.expand_path(File.dirname(__FILE__)) / 'views' / 'partial' / 'with_absolute_partial' / 'partial'
-        render
+        render 
       end
     end
 
@@ -65,7 +65,7 @@ module Merb::Test::Fixtures
         render
       end
     end
-
+    
    class PartialWithCollectionsAndCounter < RenderIt
       def index
         @foo = %w(1 2 3 4 5)

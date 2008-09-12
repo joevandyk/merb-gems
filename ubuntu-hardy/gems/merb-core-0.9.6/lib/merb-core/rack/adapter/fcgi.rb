@@ -1,6 +1,6 @@
 module Merb
   module Rack
-
+    
     class FastCGI
       # ==== Parameters
       # opts<Hash>:: Options for FastCGI (see below).

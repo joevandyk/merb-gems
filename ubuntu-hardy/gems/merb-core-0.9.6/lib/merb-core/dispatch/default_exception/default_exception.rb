@@ -50,18 +50,18 @@ module Merb
         ret   << "</table>"
         ret.join("\n")
       end
-
+      
       def textmate_url(filename, line)
         "<a href='txmt://open?url=file://#{filename}&amp;line=#{line}'>#{line}</a>"
       end
-
+      
       def render_source(filename, line)
         line = line.to_i
         ret   =  []
         ret   << "<tr class='source'>"
         ret   << "  <td class='collapse'></td>"
         str   =  "  <td class='code' colspan='2'><div>"
-
+        
         __caller_lines__(filename, line, 5) do |lline, lcode|
           str << "<a href='txmt://open?url=file://#{filename}&amp;line=#{lline}'>#{lline}</a>"
           str << "<em>" if line == lline
@@ -75,14 +75,14 @@ module Merb
         ret.join("\n")
       end
     end
-
+    
     class DefaultException < Merb::Controller
       self._template_root = File.dirname(__FILE__) / "views"
-
+      
       def _template_location(context, type = nil, controller = controller_name)
         "#{context}.#{type}"
-      end
-
+      end    
+      
       def index
         @exceptions = request.exceptions
         @show_details = Merb::Config[:exception_details]

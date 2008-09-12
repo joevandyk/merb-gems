@@ -7,9 +7,9 @@ Dir[File.join(File.dirname(__FILE__), "controllers/**/*.rb")].each do |f|
 end
 
 describe Merb::Test::RequestHelper do
-
+  
   describe Merb::Test::RequestHelper::CookieJar do
-
+    
     it "should update its values from a request object" do
       cookie_jar = Merb::Test::RequestHelper::CookieJar.new
       cookie_jar.should be_empty
@@ -18,9 +18,9 @@ describe Merb::Test::RequestHelper do
       cookie_jar.update_from_request request
       cookie_jar[:foo].should == 'bar baz'
     end
-
-  end
-
+    
+  end  
+  
   describe "#dispatch_to" do
 
     before(:all) do
@@ -43,30 +43,30 @@ describe Merb::Test::RequestHelper do
     it "should dispatch to the given controller and action with the query string merged into the params" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:show)
       controller = dispatch_to(@controller_klass, :show, {:name => "Fred"}, {'QUERY_STRING' => "last_name=Jones&age=42"} )
-
+      
       controller.params[:name].should == "Fred"
       controller.params[:last_name].should == "Jones"
-      controller.params[:age].should == "42"
+      controller.params[:age].should == "42"   
     end
 
     it "should not hit the router to match its route" do
       Merb::Router.should_not_receive(:match)
       dispatch_to(@controller_klass, :index)
     end
-
+    
     it "merges :controller into params" do
       controller = dispatch_to(@controller_klass, :show, :name => "Fred")
-
+      
       controller.params[:controller].should == @controller_klass.name.to_const_path
     end
-
+    
     it "merges :action into params" do
       controller = dispatch_to(@controller_klass, :show, :name => "Fred")
-
+      
       controller.params[:action].should == "show"
     end
   end
-
+  
   describe "#dispatch_with_basic_authentication_to" do
 
     before(:all) do
@@ -86,7 +86,7 @@ describe Merb::Test::RequestHelper do
 
       controller.request.env["X_HTTP_AUTHORIZATION"].should == "Basic #{Base64.encode64("Fred:secret")}"
     end
-
+    
     it "should dispatch to the given controller and action with authentication token and params" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:show)
 
@@ -103,24 +103,24 @@ describe Merb::Test::RequestHelper do
   end
 
   describe "#get" do
-    before(:each) do
-      Merb::Router.prepare do |r|
+    before(:each) do 
+      Merb::Router.prepare do |r| 
         r.resources :spec_helper_controller
-        r.match("/:controller/:action/:custom").to(:controller => ":controller")
+        r.match("/:controller/:action/:custom").to(:controller => ":controller") 
       end
     end
 
     it "should perform the index action when used with a get" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:index)
-      get("/spec_helper_controller")
+      get("/spec_helper_controller")  
     end
 
     it "should perform the index action and have params available" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:index)
       controller = get("/spec_helper_controller", :name => "Harry")
-      controller.params[:name].should == "Harry"
+      controller.params[:name].should == "Harry"    
     end
-
+    
     it "should perform the index action and have params available from the query string" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:index)
       controller = get("/spec_helper_controller?last_name=Oswald&age=25", :name => "Harry")
@@ -132,18 +132,18 @@ describe Merb::Test::RequestHelper do
     it "should evaluate in the context of the controller in the block" do
       get("/spec_helper_controller") do |controller|
         controller.class.should == SpecHelperController
-      end
+      end    
     end
 
     it "should allow for custom router params" do
       controller = get("/spec_helper_controller/index/my_custom_stuff")
-      controller.params[:custom].should == "my_custom_stuff"
-    end
+      controller.params[:custom].should == "my_custom_stuff"    
+    end   
 
     it "should get the show action" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:show)
       controller = get("/spec_helper_controller/my_id")
-      controller.params[:id].should == "my_id"
+      controller.params[:id].should == "my_id"    
     end
   end
 
@@ -203,23 +203,23 @@ describe Merb::Test::RequestHelper do
       controller.params[:id].should   == "my_id"
     end
   end
-
+  
   describe "#request" do
-    before(:each) do
-      Merb::Router.prepare do |r|
+    before(:each) do 
+      Merb::Router.prepare do |r| 
         r.namespace :namespaced do |namespaced|
           namespaced.resources :spec_helper_controller
         end
       end
     end
-
+    
     it "should get namespaced index action" do
       Merb::Test::ControllerAssertionMock.should_receive(:called).with(:index)
       controller = request("/namespaced/spec_helper_controller")
       controller.class.should == Namespaced::SpecHelperController
     end
   end
-
+  
 end
 
 module Merb::Test::RequestHelper

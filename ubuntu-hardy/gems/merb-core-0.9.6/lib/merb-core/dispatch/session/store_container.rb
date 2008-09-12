@@ -1,12 +1,12 @@
 module Merb
-
+  
   class SessionStoreContainer < SessionContainer
-
+    
     class_inheritable_accessor :store
     attr_accessor  :_fingerprint
-
-    # The class attribute :store holds a reference to an object that implements
-    # the following interface (either as class or instance methods):
+    
+    # The class attribute :store holds a reference to an object that implements 
+    # the following interface (either as class or instance methods): 
     #
     # - retrieve_session(session_id) # returns data as Hash
     # - store_session(session_id, data) # data should be a Hash
@@ -23,30 +23,30 @@ module Merb
     # that delegates to its 'store' attribute.
     #
     #   class FooSession < SessionStoreContainer
-    #
-    #     self.store = FooContainer
-    #
+    #   
+    #     self.store = FooContainer 
+    #   
     #   end
     #
     #   class FooContainer
-    #
+    #   
     #     def self.retrieve_session(session_id)
     #       ...
     #     end
-    #
+    #   
     #     def self.store_session(session_id, data)
     #       ...
     #     end
-    #
+    #   
     #     def self.delete_session(session_id)
     #       ...
     #     end
-    #
-    #   end
-
+    #   
+    #   end    
+    
     # When used directly, report as :store store
     self.session_store_type = :store
-
+    
     class << self
 
       # Generates a new session ID and creates a new session.
@@ -65,7 +65,7 @@ module Merb
       # request<Merb::Request>:: The Merb::Request that came in from Rack.
       #
       # ==== Returns
-      # SessionContainer:: a SessionContainer. If no sessions were found,
+      # SessionContainer:: a SessionContainer. If no sessions were found, 
       # a new SessionContainer will be generated.
       def setup(request)
         session = retrieve(request.session_id)
@@ -74,9 +74,9 @@ module Merb
         session._fingerprint = Marshal.dump(request.session.to_hash).hash
         session
       end
-
+            
       private
-
+      
       # ==== Parameters
       # session_id<String:: The ID of the session to retrieve.
       #
@@ -103,7 +103,7 @@ module Merb
         if session_data.is_a?(self)
           session_data
         else
-          # Recreate using the existing session as the data, when switching
+          # Recreate using the existing session as the data, when switching 
           # from another session type for example, eg. cookie to memcached
           # or when the data is just a hash
           new(session_id).update(session_data)
@@ -111,15 +111,15 @@ module Merb
       end
 
     end
-
+    
     # Teardown and/or persist the current session.
     #
     # ==== Parameters
     # request<Merb::Request>:: The Merb::Request that came in from Rack.
     #
     # ==== Notes
-    # The data (self) is converted to a Hash first, since a container might
-    # choose to do a full Marshal on the data, which would make it persist
+    # The data (self) is converted to a Hash first, since a container might 
+    # choose to do a full Marshal on the data, which would make it persist 
     # attributes like 'needs_new_cookie', which it shouldn't.
     def finalize(request)
       if _fingerprint != Marshal.dump(data = self.to_hash).hash
@@ -140,6 +140,6 @@ module Merb
       self.session_id = Merb::SessionMixin.rand_uuid
       store.store_session(self.session_id, self)
     end
-
+    
   end
 end

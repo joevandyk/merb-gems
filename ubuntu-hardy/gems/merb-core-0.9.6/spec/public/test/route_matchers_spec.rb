@@ -36,7 +36,7 @@ describe Merb::Test::Rspec::RouteMatchers do
 
     it "should work with the url helper and ParamMatcher" do
       idish = IDish.new(rand(1000).to_s)
-
+      
       request_to(url(:with_id, idish)).should route_to(TestController, :get).with(idish)
     end
 

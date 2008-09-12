@@ -4,7 +4,7 @@ class Object
   #
   # ==== Returns
   # Object:: The instance variable @attr for this object.
-  #
+  # 
   # ==== Examples
   #   # In a spec
   #   @my_obj.assigns(:my_value).should == @my_value

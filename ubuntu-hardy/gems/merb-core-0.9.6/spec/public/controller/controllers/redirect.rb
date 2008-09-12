@@ -20,13 +20,13 @@ module Merb::Test::Fixtures::Controllers
       redirect("/", :message => { :notice => "what?" })
     end
   end
-
+  
   class ConsumesMessage < Testing
     def index
       message[:notice].inspect
     end
   end
-
+  
   class SetsMessage < Testing
     def index
       message[:notice] = "Hello"

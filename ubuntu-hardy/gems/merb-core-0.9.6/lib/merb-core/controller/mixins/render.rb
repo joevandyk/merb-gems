@@ -103,16 +103,16 @@ module Merb::RenderMixin
     # Do we have a template to try to render?
     if thing.is_a?(Symbol) || opts[:template]
 
-      template_method, template_location =
+      template_method, template_location = 
         _template_for(thing, content_type, controller_name, opts[:template])
 
       # Raise an error if there's no template
       unless template_method && self.respond_to?(template_method)
         template_files = Merb::Template.template_extensions.map { |ext| "#{template_location}.#{ext}" }
-        raise TemplateNotFound, "Oops! No template found. Merb was looking for #{template_files.join(', ')}" +
-          "for content type '#{content_type}'. You might have mispelled the template or file name. " +
+        raise TemplateNotFound, "Oops! No template found. Merb was looking for #{template_files.join(', ')}" + 
+          "for content type '#{content_type}'. You might have mispelled the template or file name. " + 
           "Registered template extensions: #{Merb::Template.template_extensions.join(', ')}. " +
-          "If you use Haml or some other template plugin, make sure you required Merb plugin dependency " +
+          "If you use Haml or some other template plugin, make sure you required Merb plugin dependency " + 
           "in your init file."
       end
 
@@ -220,7 +220,7 @@ module Merb::RenderMixin
     layout_opt = opts.delete(:layout)
     _handle_options!(opts)
     throw_content(:for_layout, opts.empty? ? object.send(transform) : object.send(transform, opts))
-
+    
     meth, _ = _template_for(layout_opt, layout_opt.to_s.index(".") ? nil : content_type, "layout") if layout_opt
     meth ? send(meth) : catch_content(:for_layout)
   end
@@ -230,8 +230,8 @@ module Merb::RenderMixin
   # ==== Parameters
   # template<~to_s>::
   #   The path to the template, relative to the current controller or the
-  #   template root; absolute path will work too. If the template contains a "/",
-  #   Merb will search for it relative to the template root; otherwise,
+  #   template root; absolute path will work too. If the template contains a "/", 
+  #   Merb will search for it relative to the template root; otherwise, 
   #   Merb will search for it relative to the current controller.
   # opts<Hash>:: A hash of options (see below)
   #
@@ -290,21 +290,21 @@ module Merb::RenderMixin
       kontroller = (m = template.match(/.*(?=\/)/)) ? m[0] : controller_name
       template = "_#{File.basename(template)}"
     end
-    template_method, template_location =
+    template_method, template_location = 
       _template_for(template, opts.delete(:format) || content_type, kontroller, template_path)
 
     (@_old_partial_locals ||= []).push @_merb_partial_locals
-
+    
     # This handles no :with as well
     with = [opts.delete(:with)].flatten
     as = opts.delete(:as) || template_location.match(%r[.*/_([^\.]*)])[1]
-
+    
     @_merb_partial_locals = opts.merge(:collection_index => -1, :collection_size => with.size)
-
+    
     # this handles an edge-case where the name of the partial is _foo.* and your opts
     # have :foo as a key.
     named_local = @_merb_partial_locals.key?(as.to_sym)
-
+    
     sent_template = with.map do |temp|
       @_merb_partial_locals[as.to_sym] = temp unless named_local
       if template_method && self.respond_to?(template_method)
@@ -314,7 +314,7 @@ module Merb::RenderMixin
         raise TemplateNotFound, "Could not find template at #{template_location}.*"
       end
     end.join
-
+    
     @_merb_partial_locals = @_old_partial_locals.pop
     sent_template
   end
@@ -355,15 +355,15 @@ module Merb::RenderMixin
   #   layout was specified, and the default layouts were not found.
   def _get_layout(layout = nil)
     return false if layout == false
-
+    
     layout = layout.instance_of?(Symbol) && self.respond_to?(layout, true) ? send(layout) : layout
     layout = layout.to_s if layout
 
     # If a layout was provided, throw an error if it's not found
-    if layout
-      template_method, template_location =
+    if layout      
+      template_method, template_location = 
         _template_for(layout, layout.index(".") ? nil : content_type, "layout")
-
+        
       raise TemplateNotFound, "No layout found at #{template_location}" unless template_method
       template_method
 
@@ -404,18 +404,18 @@ module Merb::RenderMixin
       # :template => "foo/bar.html" where root / "foo/bar.html.*" exists
       if template
         template_location = root / self.send(template_meth, template, content_type, nil)
-      # :layout => "foo" where root / "layouts" / "#{controller}.html.*" exists
+      # :layout => "foo" where root / "layouts" / "#{controller}.html.*" exists        
       else
         template_location = root / self.send(template_meth, context, content_type, controller)
       end
-
+      
       break if template_method = _template_method_for(template_location.to_s)
     end
 
     # template_location is a Pathname
     [template_method, template_location.to_s]
   end
-
+  
   # Return the template method for a location, and check to make sure the current controller
   # actually responds to the method.
   #

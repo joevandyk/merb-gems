@@ -9,5 +9,5 @@ class Base < Application
   def template
     render
   end
-
+  
 end

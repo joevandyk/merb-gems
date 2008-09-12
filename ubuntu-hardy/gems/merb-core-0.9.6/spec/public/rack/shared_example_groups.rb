@@ -32,3 +32,4 @@ describe "transparent middleware", :shared => true do
     end
   end
 end
+

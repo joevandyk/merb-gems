@@ -1,12 +1,12 @@
 # Most of this list is simply constants frozen for efficiency
 module Merb
     module Const
-
+    
     DEFAULT_SEND_FILE_OPTIONS = {
       :type         => 'application/octet-stream'.freeze,
       :disposition  => 'attachment'.freeze
     }.freeze
-
+    
     SET_COOKIE               = " %s=%s; path=/; expires=%s".freeze
     COOKIE_EXPIRATION_FORMAT = "%a, %d-%b-%Y %H:%M:%S GMT".freeze
     COOKIE_SPLIT             = /[;,] */n.freeze

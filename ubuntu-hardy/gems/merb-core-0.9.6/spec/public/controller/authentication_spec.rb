@@ -40,7 +40,7 @@ end
 
 describe Merb::Controller do
   MTFC = Merb::Test::Fixtures::Controllers
-
+  
   describe "#basic_authentication with no realm" do
     it_should_behave_like "basic_authentication in general"
 
@@ -82,7 +82,7 @@ describe Merb::Controller do
     end
 
   end
-
+  
   describe "#basic_authentication.request" do
 
     it "should halt the filter chain and return a 401 status code" do
@@ -104,22 +104,22 @@ describe Merb::Controller do
   end
 
   describe "#basic_authentication.request!" do
-
+    
     it "should not halt the filter chain and provide a 401 status code" do
       response = dispatch_to(MTFC::PassiveBasicAuthentication, :index)
       response.status = 401
     end
-
+    
     it "should have a default WWW=Authentication realm of 'Application'" do
       response = dispatch_to(MTFC::PassiveBasicAuthentication, :index)
       response.headers['WWW-Authenticate'].should == 'Basic realm="Application"'
     end
-
+    
     it "should set the WWW-Authenticate realm" do
       response = dispatch_to(MTFC::PassiveBasicAuthenticationWithRealm, :index)
       response.headers['WWW-Authenticate'].should == 'Basic realm="My Super App"'
     end
-
+    
     it "should allow the action to render it's output" do
       response = dispatch_to(MTFC::PassiveBasicAuthentication, :index)
       response.body.should == "My Output"
@@ -132,39 +132,39 @@ describe Merb::Controller do
     end
 
   end
-
+  
   describe "basic_authentication.provided?" do
-
+    
     it "should return true when basic authentication credentials have been supplied" do
       u, p = "Fred", "secret"
       response = dispatch_with_basic_authentication_to(MTFC::PassiveBasicAuthentication, :index, u, p)
       response.basic_authentication.provided?.should be_true
     end
-
+    
     it "should return false when basic authentication credentials have not been supplied" do
       response = dispatch_to(MTFC::PassiveBasicAuthentication, :index)
       response.basic_authentication.provided?.should be_false
     end
   end
-
+  
   describe "basic_authentication.username and password" do
     it "return username if set" do
       u, p = "Fred", "secret"
       response = dispatch_with_basic_authentication_to(MTFC::PassiveBasicAuthentication, :index, u, p)
       response.basic_authentication.username.should == "Fred"
     end
-
+    
     it "should return nil if the username is not set" do
       response = dispatch_to(MTFC::PassiveBasicAuthentication, :index)
       response.basic_authentication.username.should be_nil
     end
-
+    
     it "should return password if set" do
       u, p = "Fred", "secret"
       response = dispatch_with_basic_authentication_to(MTFC::PassiveBasicAuthentication, :index, u, p)
       response.basic_authentication.password.should == "secret"
     end
-
+    
     it "shoudl return nil for the password if not set" do
       response = dispatch_to(MTFC::PassiveBasicAuthentication, :index)
       response.basic_authentication.password.should be_nil

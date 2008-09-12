@@ -6,14 +6,14 @@ module Merb
         super(app)
         @path_prefix = /^#{Regexp.escape(path_prefix)}/
       end
-
+      
       def deferred?(env)
-        strip_path_prefix(env)
+        strip_path_prefix(env) 
         @app.deferred?(env)
       end
-
+      
       def call(env)
-        strip_path_prefix(env)
+        strip_path_prefix(env) 
         @app.call(env)
       end
 
@@ -25,7 +25,7 @@ module Merb
           end
         end
       end
-
+      
     end
   end
 end

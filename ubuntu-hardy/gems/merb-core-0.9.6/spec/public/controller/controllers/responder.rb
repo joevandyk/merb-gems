@@ -35,7 +35,7 @@ module Merb::Test::Fixtures::Controllers
   end
 
   class ClassAndLocalProvides < Responder
-    provides :html
+    provides :html    
     def index
       provides :xml
       render

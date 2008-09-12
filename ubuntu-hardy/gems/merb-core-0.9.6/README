@@ -9,12 +9,13 @@ Goals of this release:
   * Improve comments on methods using a standard documentation methodology as described in DOCUMENTATION_STANDARDS
   * Separate the tests into two sections... "private" and "public"
     * Public methods are methods tagged with @public that will be part of the standard, stable Merb API
-    * Private methods are implementation methods that might
+    * Private methods are implementation methods that might 
   * Implement a new render API
   * Build more extensions to regain selected features when needed
-
+  
 To familiarize yourself with how a merb-core application might look,
 use merb-gen (from merb-more) to generate a few apps:
 $ merb-gen app myapp                   # a "normal" merb app
 $ merb-gen app myapp --flat            # a flattened app
 $ merb-gen app myapp --very-flat       # a single-file app
+

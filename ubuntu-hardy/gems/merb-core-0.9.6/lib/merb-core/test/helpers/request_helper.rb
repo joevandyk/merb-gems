@@ -44,7 +44,7 @@ module Merb
 
       # CookieJar keeps track of cookies in a simple Mash.
       class CookieJar < Mash
-
+        
         # ==== Parameters
         # request<Merb::Request, Merb::FakeRequest>:: The controller request.
         def update_from_request(request)
@@ -56,7 +56,7 @@ module Merb
             end
           end
         end
-
+        
       end
 
       # ==== Parameters
@@ -117,7 +117,7 @@ module Merb
         params = merge_controller_and_action(controller_klass, action, params)
         dispatch_request(build_request(params, env), controller_klass, action.to_s, &blk)
       end
-
+      
       # Keep track of cookie values in CookieJar within the context of the
       # block; you need to set this up for secific controllers.
       #
@@ -170,15 +170,15 @@ module Merb
       # @public
       def dispatch_with_basic_authentication_to(controller_klass, action, username, password, params = {}, env = {}, &blk)
         env["X_HTTP_AUTHORIZATION"] = "Basic #{Base64.encode64("#{username}:#{password}")}"
-
-        params = merge_controller_and_action(controller_klass, action, params)
+        
+        params = merge_controller_and_action(controller_klass, action, params)        
         dispatch_request(build_request(params, env), controller_klass, action.to_s, &blk)
       end
-
+      
       def merge_controller_and_action(controller_klass, action, params)
         params[:controller] = controller_klass.name.to_const_path
         params[:action]     = action.to_s
-
+        
         params
       end
 
@@ -204,11 +204,11 @@ module Merb
       # Does not use routes.
       #
       #---
-      # @public
+      # @public      
       def build_request(params = {}, env = {})
         params             = Merb::Request.params_to_query_string(params)
         env[:query_string] = env["QUERY_STRING"] ? "#{env["QUERY_STRING"]}&#{params}" : params
-
+        
         fake_request(env, { :post_body => env[:post_body], :req => env[:req] })
       end
 
@@ -225,7 +225,7 @@ module Merb
       #   The controller is yielded to the block provided for actions *prior* to
       #   the action being dispatched.
       #---
-      # @public
+      # @public      
       def get(path, params = {}, env = {}, &block)
         env[:request_method] = "GET"
         request(path, params, env, &block)
@@ -244,7 +244,7 @@ module Merb
       #   The controller is yielded to the block provided for actions *prior* to
       #   the action being dispatched.
       #---
-      # @public
+      # @public      
       def post(path, params = {}, env = {}, &block)
         env[:request_method] = "POST"
         request(path, params, env, &block)
@@ -263,7 +263,7 @@ module Merb
       #   The controller is yielded to the block provided for actions *prior* to
       #   the action being dispatched.
       #---
-      # @public
+      # @public      
       def put(path, params = {}, env = {}, &block)
         env[:request_method] = "PUT"
         request(path, params, env, &block)
@@ -315,7 +315,7 @@ module Merb
       def request(path, params = {}, env= {}, &block)
         env[:request_method] ||= "GET"
         env[:request_uri], env[:query_string] = path.split('?')
-
+        
         multipart = env.delete(:test_with_multipart)
 
         request = fake_request(env)
@@ -323,7 +323,7 @@ module Merb
         opts = check_request_for_route(request) # Check that the request will be routed correctly
         controller_name = (opts[:namespace] ? opts.delete(:namespace) + '/' : '') + opts.delete(:controller)
         klass = Object.full_const_get(controller_name.snake_case.to_const_string)
-
+        
         action = opts.delete(:action).to_s
         params.merge!(opts)
 

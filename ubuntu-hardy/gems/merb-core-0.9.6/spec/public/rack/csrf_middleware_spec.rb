@@ -32,7 +32,7 @@ describe Merb::Rack::Csrf do
     @app = Merb::Rack::Application.new
     @middleware = Merb::Rack::Csrf.new(@app)
     @env = Rack::MockRequest.env_for('/users/new')
-
+    
     Merb::Config[:session_secret_key] = "ABC"
   end
 

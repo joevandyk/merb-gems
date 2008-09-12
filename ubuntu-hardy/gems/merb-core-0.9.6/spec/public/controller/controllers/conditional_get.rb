@@ -20,14 +20,14 @@ module Merb::Test::Fixtures
       def superfresh
         self.etag          = "39791e6fb09"
         self.last_modified = Time.at(7000)
-
+        
         "can has fresh request"
       end
 
       def stale
         self.etag          = "1234567678"
         self.last_modified = Time.at(9000)
-
+        
         "can has stale request"
       end
     end

@@ -5,7 +5,7 @@ module Kernel
   #
   # If that has already happened, the gem will be activated
   # immediately.
-  #
+  # 
   # ==== Parameters
   # @param name<String> The name of the gem to load.
   # @param *ver<Gem::Requirement, Gem::Version, Array, #to_str>
@@ -137,10 +137,10 @@ module Kernel
   # @api public
   def use_test(test_framework, *test_dependencies)
     Merb.test_framework = test_framework
-
+    
     Kernel.dependencies test_dependencies if Merb.env == "test" || Merb.env.nil?
   end
-
+  
   # Used in Merb.root/config/init.rb to tell Merb which template engine to
   # prefer.
   #
@@ -151,7 +151,7 @@ module Kernel
   #   use_template_engine :haml
   #
   #   # This will now use haml templates in generators where available.
-  #   $ merb-gen resource_controller Project
+  #   $ merb-gen resource_controller Project 
   # @api public
   def use_template_engine(template_engine)
     Merb.template_engine = template_engine
@@ -209,30 +209,30 @@ module Kernel
       lines = File.read(file).split("\n")
       first_line = (f = line - size - 1) < 0 ? 0 : f
       lines = lines[first_line, size * 2 + 1]
-
+      
       lines.each_with_index do |str, index|
         yield index + line - size, str.chomp
       end
     end
-    #
+    # 
     # lines = File.readlines(file)
     # current = line.to_i - 1
-    #
+    # 
     # first = current - size
     # first = first < 0 ? 0 : first
-    #
+    # 
     # last = current + size
     # last = last > lines.size ? lines.size : last
-    #
+    # 
     # log = lines[first..last]
-    #
+    # 
     # area = []
-    #
+    # 
     # log.each_with_index do |line, index|
     #   index = index + first + 1
     #   area << [index, line.chomp, index == current + 1]
     # end
-    #
+    # 
     # area
   end
 

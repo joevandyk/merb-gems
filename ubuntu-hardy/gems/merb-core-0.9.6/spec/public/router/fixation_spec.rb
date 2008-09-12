@@ -3,10 +3,10 @@ require File.join(File.dirname(__FILE__), "spec_helper")
 module Merb::Test::Fixtures
   module Controllers
     class FixatableRoutes < Merb::Controller
-
+      
       def fixoid
       end
-
+      
     end
   end
 end
@@ -17,7 +17,7 @@ describe "A route marked as fixatable" do
   before do
     Merb::Router.prepare do |r|
       r.match("/hello/:action/:id").to(
-        :controller => "merb/test/fixtures/controllers/fixatable_routes",
+        :controller => "merb/test/fixtures/controllers/fixatable_routes", 
         :action => "fixoid").fixatable
     end
   end
@@ -25,10 +25,10 @@ describe "A route marked as fixatable" do
   it "allows fixation" do
     matched_route_for("/hello/goodbye/tagging").should allow_fixation
   end
-
+  
   it "should store a cookie with the session_id" do
     session_id = Merb::SessionMixin.rand_uuid
-    request = fake_request(:request_uri => "/hello/goodbye/tagging",
+    request = fake_request(:request_uri => "/hello/goodbye/tagging", 
       :query_string => "_session_id=#{session_id}")
     controller = ::Merb::Dispatcher.handle(request)
     controller.params["_session_id"].should == session_id

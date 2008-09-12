@@ -6,7 +6,7 @@ module Merb
 
     class Mongrel
       # start server on given host and port.
-
+      
       # ==== Parameters
       # opts<Hash>:: Options for Mongrel (see below).
       #

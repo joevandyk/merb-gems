@@ -1,5 +1,5 @@
 module Merb
-
+  
   # Sessions stored in memory.
   #
   # Set it up by adding the following to your init file:
@@ -12,25 +12,25 @@ module Merb
   # Sessions will remain in memory until the server is stopped or the time
   # as set in :memory_session_ttl expires.
   class MemorySession < SessionStoreContainer
-
+    
     # The session store type
     self.session_store_type = :memory
-
+    
     # Bypass normal implicit class attribute reader - see below.
     def store
       self.class.store
     end
-
+    
     # Lazy load/setup of MemorySessionStore.
     def self.store
       @_store ||= MemorySessionStore.new(Merb::Config[:memory_session_ttl])
     end
-
+    
   end
-
+  
   # Used for handling multiple sessions stored in memory.
   class MemorySessionStore
-
+    
     # ==== Parameters
     # ttl<Fixnum>:: Session validity time in seconds. Defaults to 1 hour.
     def initialize(ttl=nil)
@@ -40,7 +40,7 @@ module Merb
       @session_ttl = ttl || 60*60 # default 1 hour
       start_timer
     end
-
+    
     # ==== Parameters
     # session_id<String>:: ID of the session to retrieve.
     #
@@ -75,7 +75,7 @@ module Merb
     # Deletes any sessions that have reached their maximum validity.
     def reap_old_sessions
       @timestamps.each do |session_id,stamp|
-        delete_session(session_id) if (stamp + @session_ttl) < Time.now
+        delete_session(session_id) if (stamp + @session_ttl) < Time.now 
       end
       GC.start
     end
@@ -86,10 +86,10 @@ module Merb
         loop {
           sleep @session_ttl
           reap_old_sessions
-        }
-      end
+        } 
+      end  
     end
-
+    
   end
 
 end

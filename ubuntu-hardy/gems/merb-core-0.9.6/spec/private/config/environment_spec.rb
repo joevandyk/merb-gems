@@ -9,5 +9,5 @@ describe Merb::Config do
   it "should apply environment from the command line option -e" do
     Merb.start %w( -e selenium )
     Merb.environment.should == "selenium"
-  end
+  end  
 end

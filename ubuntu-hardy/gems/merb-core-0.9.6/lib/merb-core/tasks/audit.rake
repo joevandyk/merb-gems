@@ -33,7 +33,7 @@ namespace :audit do
       end
     end
   end
-
+  
   desc "Print out controllers and their actions (use CONTROLLER=Foo,Bar to be selective)"
   task :actions => :merb_env do
     puts "\nControllers and their actions:\n\n"
@@ -58,11 +58,11 @@ namespace :audit do
         puts "~ no callable actions"
       end
       puts
-    end
+    end    
   end
-
+  
   def abstract_controller_classes
     ObjectSpace.classes.select { |x| x.superclass == Merb::AbstractController }.sort_by { |x| x.name }
   end
-
+  
 end

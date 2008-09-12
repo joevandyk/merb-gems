@@ -21,16 +21,16 @@ module Merb::Test::Fixtures::Controllers
     def index
       @obj = SomeModel.new
       display @obj
-    end
+    end    
   end
 
   class DisplayWithLayout < Testing
     provides :json
-
+    
     def index
       @obj = SomeModel.new
       display @obj, :layout => :custom_arg
-    end
+    end    
   end
 
   class DisplayHtmlDefault < Display; end
@@ -55,25 +55,25 @@ module Merb::Test::Fixtures::Controllers
     def no_layout
       render :layout => false
     end
-
+    
     def absolute_without_mime
       render :template => File.expand_path(self._template_root) / "merb/test/fixtures/controllers/html_default/index"
     end
-
+    
     def absolute_with_mime
       render :template => File.expand_path(self._template_root) / "merb/test/fixtures/controllers/html_default/index.html"
     end
-
+    
     def relative_without_mime
       render :template => "merb/test/fixtures/controllers/html_default/index"
     end
-
+    
     def relative_with_mime
       render :template => "merb/test/fixtures/controllers/html_default/index.html"
     end
-
+    
   end
-
+  
   class DisplayWithTemplateArgument < Display
     def index
       @obj = SomeModel.new

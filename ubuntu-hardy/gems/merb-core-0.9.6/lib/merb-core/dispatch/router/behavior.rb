@@ -492,25 +492,25 @@ module Merb
       # ==== Examples
       #
       #  r.resource :account # will result in the typical RESTful CRUD
-      #    # shows new resource form
+      #    # shows new resource form      
       #    # GET     /account/new                :action => "new"
       #
-      #    # creates resource
+      #    # creates resource      
       #    # POST    /account/?(\.:format)?,     :action => "create"
       #
-      #    # shows resource
+      #    # shows resource      
       #    # GET     /account/(\.:format)?       :action => "show"
       #
-      #    # shows edit form
+      #    # shows edit form      
       #    # GET     /account//edit           :action => "edit"
       #
-      #    # updates resource
+      #    # updates resource      
       #    # PUT     /account/(\.:format)?       :action => "update"
       #
-      #    # shows deletion confirmation page
+      #    # shows deletion confirmation page      
       #    # GET     /account//delete         :action => "delete"
       #
-      #    # destroys resources
+      #    # destroys resources      
       #    # DELETE  /account/(\.:format)?       :action => "destroy"
       #
       # You can optionally pass :namespace and :controller to refine the routing
@@ -662,7 +662,7 @@ module Merb
       def redirects?
         @redirects
       end
-
+      
       def ancestors
         @ancestors ||= find_ancestors
       end

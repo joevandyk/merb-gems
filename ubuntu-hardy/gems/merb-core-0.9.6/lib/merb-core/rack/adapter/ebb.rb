@@ -1,11 +1,11 @@
 require 'ebb'
 module Merb
-
+  
   module Rack
 
     class Ebb
       # start an Ebb server on given host and port.
-
+      
       # ==== Parameters
       # opts<Hash>:: Options for Ebb (see below).
       #
